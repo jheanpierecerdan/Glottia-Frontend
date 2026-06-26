@@ -1,0 +1,357 @@
+:host {
+  display: block;
+  --rose: #e53d8c;
+  --rose-soft: rgba(229, 61, 140, .14);
+  --mint: #64dec9;
+  --ink: #2b1423;
+  --muted: #75596b;
+  --panel: rgba(255, 255, 255, .78);
+  --line: rgba(192, 48, 121, .14);
+  --danger: #b42356;
+}
+
+.form-page {
+  display: grid;
+  gap: 1rem;
+  min-height: calc(100vh - 76px);
+  padding: 112px clamp(1rem, 4vw, 4rem) 3.5rem;
+  color: var(--ink);
+  background:
+    radial-gradient(circle at 9% 10%, rgba(255, 117, 188, .16), transparent 25rem),
+    radial-gradient(circle at 92% 0%, rgba(100, 222, 201, .15), transparent 24rem),
+    linear-gradient(135deg, #fff7fb, #fff 48%, #f7fffc);
+}
+
+.form-hero,
+.form-card,
+.state-card {
+  border: 1px solid var(--line);
+  background: var(--panel);
+  box-shadow: 0 22px 58px rgba(78, 23, 60, .10);
+  backdrop-filter: blur(18px);
+}
+
+.form-hero {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: clamp(1.1rem, 2vw, 1.5rem);
+  border-radius: 32px;
+  animation: form-rise .55s ease both;
+}
+
+.form-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, rgba(229, 61, 140, .12), transparent 42%),
+    radial-gradient(circle at 100% 0%, rgba(100, 222, 201, .18), transparent 13rem);
+}
+
+.hero-copy-wrap {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  min-width: 0;
+}
+
+.hero-icon {
+  flex: 0 0 auto;
+  width: 4rem;
+  height: 4rem;
+  border-radius: 24px;
+  display: grid;
+  place-items: center;
+  color: var(--rose);
+  background: linear-gradient(145deg, rgba(255,255,255,.94), rgba(255,117,188,.13));
+  box-shadow: 0 16px 32px rgba(229, 61, 140, .15);
+}
+
+.hero-icon mat-icon {
+  width: 2.2rem;
+  height: 2.2rem;
+  font-size: 2.2rem;
+}
+
+.hero-copy span {
+  display: inline-flex;
+  margin-bottom: .4rem;
+  padding: .38rem .65rem;
+  border-radius: 999px;
+  color: #b8206f;
+  background: var(--rose-soft);
+  font-size: .74rem;
+  font-weight: 900;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+h1 {
+  margin: 0 0 .3rem;
+  color: var(--ink);
+  font-size: clamp(1.8rem, 4vw, 3rem);
+  line-height: 1;
+  letter-spacing: -.055em;
+}
+
+p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.back-action,
+.cancel-action,
+mat-card-actions button {
+  min-height: 44px;
+  border-radius: 999px !important;
+  font-weight: 850;
+  text-transform: none;
+}
+
+.back-action {
+  position: relative;
+  z-index: 1;
+  color: #47233a !important;
+  border: 1px solid rgba(229, 61, 140, .18);
+  background: rgba(255, 255, 255, .68);
+}
+
+.back-action ::ng-deep .mdc-button__label,
+.cancel-action ::ng-deep .mdc-button__label,
+mat-card-actions button ::ng-deep .mdc-button__label {
+  display: inline-flex;
+  align-items: center;
+  gap: .45rem;
+}
+
+.state-card,
+.form-card {
+  overflow: hidden;
+  border-radius: 30px;
+  animation: form-rise .65s .05s ease both;
+}
+
+.state-card mat-card-content {
+  min-height: 125px;
+  padding: 1.35rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.state-card mat-icon {
+  width: 2.3rem;
+  height: 2.3rem;
+  color: var(--rose);
+  font-size: 2.3rem;
+}
+
+.state-card strong {
+  display: block;
+  color: var(--ink);
+  margin-bottom: .25rem;
+}
+
+.accent-bar {
+  height: 6px;
+  background: linear-gradient(90deg, var(--rose), var(--mint), #ffd1e7);
+}
+
+mat-card-content {
+  padding: clamp(1rem, 2.3vw, 1.8rem);
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(240px, 1fr));
+  gap: 1rem;
+}
+
+.full {
+  grid-column: 1 / -1;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+:host ::ng-deep .mat-mdc-text-field-wrapper {
+  border-radius: 18px !important;
+  background: rgba(255, 255, 255, .72) !important;
+}
+
+:host ::ng-deep .mat-mdc-form-field-icon-prefix {
+  padding: 0 .65rem 0 .15rem;
+  color: var(--rose);
+}
+
+:host ::ng-deep .mdc-notched-outline__leading,
+:host ::ng-deep .mdc-notched-outline__notch,
+:host ::ng-deep .mdc-notched-outline__trailing {
+  border-color: rgba(74, 33, 56, .13) !important;
+}
+
+:host ::ng-deep .mat-mdc-form-field:hover .mdc-notched-outline__leading,
+:host ::ng-deep .mat-mdc-form-field:hover .mdc-notched-outline__notch,
+:host ::ng-deep .mat-mdc-form-field:hover .mdc-notched-outline__trailing,
+:host ::ng-deep .mat-mdc-form-field.mat-focused .mdc-notched-outline__leading,
+:host ::ng-deep .mat-mdc-form-field.mat-focused .mdc-notched-outline__notch,
+:host ::ng-deep .mat-mdc-form-field.mat-focused .mdc-notched-outline__trailing {
+  border-color: rgba(229, 61, 140, .55) !important;
+}
+
+:host ::ng-deep .mat-mdc-form-field.mat-focused .mdc-notched-outline__leading,
+:host ::ng-deep .mat-mdc-form-field.mat-focused .mdc-notched-outline__notch,
+:host ::ng-deep .mat-mdc-form-field.mat-focused .mdc-notched-outline__trailing {
+  border-width: 2px !important;
+}
+
+:host ::ng-deep .mat-mdc-form-field.mat-focused .mat-mdc-floating-label,
+:host ::ng-deep .mat-mdc-form-field .mat-mdc-floating-label.mdc-floating-label--float-above {
+  color: #b8206f !important;
+}
+
+:host ::ng-deep input,
+:host ::ng-deep textarea,
+:host ::ng-deep .mat-mdc-select-value {
+  color: var(--ink) !important;
+}
+
+.field-checkbox {
+  min-height: 58px;
+  padding: 0 .75rem;
+  border: 1px solid rgba(74, 33, 56, .10);
+  border-radius: 18px;
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, .65);
+}
+
+.field-checkbox mat-icon {
+  margin: 0 .5rem 0 .15rem;
+  color: var(--rose);
+}
+
+.error,
+.delete-text {
+  margin-bottom: 1rem;
+  padding: .8rem .9rem;
+  border-radius: 18px;
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  font-weight: 850;
+}
+
+.error {
+  color: var(--danger);
+  background: rgba(180, 35, 86, .10);
+  border: 1px solid rgba(180, 35, 86, .16);
+}
+
+.delete-text {
+  color: #8f195b;
+  background: var(--rose-soft);
+}
+
+pre {
+  max-height: 260px;
+  overflow: auto;
+  margin: 0;
+  padding: 1rem;
+  border: 1px solid rgba(74, 33, 56, .10);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, .68);
+  color: var(--ink);
+  white-space: pre-wrap;
+}
+
+mat-card-actions {
+  padding: 0 clamp(1rem, 2.3vw, 1.8rem) clamp(1rem, 2.3vw, 1.8rem);
+  gap: .65rem;
+  flex-wrap: wrap;
+}
+
+.cancel-action {
+  color: #47233a !important;
+  border: 1px solid rgba(229, 61, 140, .18) !important;
+  background: rgba(255, 255, 255, .68) !important;
+}
+
+mat-card-actions button[mat-flat-button] {
+  color: #fff !important;
+  background: linear-gradient(135deg, var(--rose), #ff78b4) !important;
+  box-shadow: 0 14px 26px rgba(229, 61, 140, .22);
+}
+
+mat-card-actions button[disabled] {
+  opacity: .52;
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+.delete-mode .accent-bar {
+  background: linear-gradient(90deg, var(--danger), #ffb3a7);
+}
+
+:host-context(.dark-theme) .form-page {
+  background:
+    radial-gradient(circle at 9% 10%, rgba(255, 117, 188, .14), transparent 25rem),
+    radial-gradient(circle at 92% 0%, rgba(100, 222, 201, .12), transparent 24rem),
+    linear-gradient(135deg, #1a0b16, #21101d 48%, #071f1d);
+}
+
+:host-context(.dark-theme) .form-hero,
+:host-context(.dark-theme) .form-card,
+:host-context(.dark-theme) .state-card {
+  background: rgba(38, 18, 32, .78);
+  border-color: rgba(255, 255, 255, .1);
+}
+
+:host-context(.dark-theme) h1,
+:host-context(.dark-theme) .state-card strong {
+  color: #fff7fb !important;
+}
+
+:host-context(.dark-theme) ::ng-deep input,
+:host-context(.dark-theme) ::ng-deep textarea,
+:host-context(.dark-theme) ::ng-deep .mat-mdc-select-value {
+  color: #fff7fb !important;
+}
+
+:host-context(.dark-theme) p {
+  color: #d9b9cb;
+}
+
+@keyframes form-rise {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: none; }
+}
+
+@media (max-width: 760px) {
+  .form-page {
+    padding: 96px 1rem 2rem;
+  }
+
+  .form-hero,
+  .hero-copy-wrap {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .back-action {
+    justify-self: start;
+  }
+}

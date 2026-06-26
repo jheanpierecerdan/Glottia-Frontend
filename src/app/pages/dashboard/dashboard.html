@@ -1,0 +1,165 @@
+<section class="role-dashboard" [class.admin]="role === 'ADMINISTRADOR'" [class.student]="role === 'ESTUDIANTE'">
+  <div class="dashboard-hero">
+    <div class="hero-copy">
+      <span class="eyebrow">
+        <mat-icon>verified</mat-icon>
+        Acceso {{ roleLabel }}
+      </span>
+      <h1>{{ greeting }}</h1>
+      <p>{{ intro }}</p>
+      <div class="hero-actions">
+        <a routerLink="/agenda">
+          <mat-icon>event</mat-icon>
+          Ver agenda
+        </a>
+        @if (role === 'ADMINISTRADOR') {
+          <a routerLink="/usuarios" class="soft">
+            <mat-icon>groups</mat-icon>
+            Comunidad registrada
+          </a>
+        } @else if (role === 'ESTUDIANTE') {
+          <a routerLink="/reservas" class="soft">
+            <mat-icon>bookmark</mat-icon>
+            Mis reservas
+          </a>
+        } @else {
+          <a routerLink="/eventos/insert" class="soft">
+            <mat-icon>add_circle</mat-icon>
+            Crear evento
+          </a>
+        }
+      </div>
+    </div>
+
+    <div class="orbital-card" aria-label="Resumen del rol">
+      <div class="orbit orbit-one"></div>
+      <div class="orbit orbit-two"></div>
+      <div class="role-core">
+        <mat-icon>{{ role === 'ADMINISTRADOR' ? 'admin_panel_settings' : role === 'ESTUDIANTE' ? 'school' : 'auto_awesome' }}</mat-icon>
+        <strong>{{ roleLabel }}</strong>
+        <span>{{ auth.session()?.nombre || 'Glottia' }}</span>
+      </div>
+    </div>
+  </div>
+
+  @if (loading) {
+    <div class="loading-panel">
+      <span></span><span></span><span></span>
+      Preparando tu espacio...
+    </div>
+  } @else {
+    <div class="metrics-grid">
+      @for (metric of metrics; track metric.label) {
+        <article class="metric-card reveal-card">
+          <span class="metric-icon"><mat-icon>{{ metric.icon }}</mat-icon></span>
+          <div>
+            <strong>{{ metric.value }}</strong>
+            <p>{{ metric.label }}</p>
+            <small>{{ metric.detail }}</small>
+          </div>
+        </article>
+      }
+    </div>
+
+    <div class="dashboard-grid">
+      <article class="panel-card access-panel">
+        <div class="panel-heading">
+          <span>Accesos inteligentes</span>
+          <h2>Lo que necesitas según tu rol</h2>
+        </div>
+
+        <div class="action-list">
+          @for (action of actions; track action.label) {
+            <a
+              [routerLink]="action.route"
+              class="action-card"
+              [class.rose]="action.accent === 'rose'"
+              [class.mint]="action.accent === 'mint'"
+              [class.violet]="action.accent === 'violet'"
+              [class.amber]="action.accent === 'amber'"
+            >
+              <span><mat-icon>{{ action.icon }}</mat-icon></span>
+              <div>
+                <strong>{{ action.label }}</strong>
+                <p>{{ action.description }}</p>
+              </div>
+              <mat-icon>arrow_forward</mat-icon>
+            </a>
+          }
+        </div>
+      </article>
+
+      @if (showAdminChart) {
+        <article class="panel-card chart-panel">
+          <div class="panel-heading">
+            <span>Comunidad</span>
+            <h2>Distribución por roles</h2>
+          </div>
+
+          <div class="donut-wrap">
+            <div class="donut">
+              <strong>{{ activeUsers }}</strong>
+              <span>activos</span>
+            </div>
+            <div class="status-pills">
+              <span><i></i>{{ activeUsers }} activos</span>
+              <span><i class="off"></i>{{ inactiveUsers }} inactivos</span>
+            </div>
+          </div>
+
+          <div class="bar-list">
+            @for (stat of roleStats; track stat.name) {
+              <div class="role-bar">
+                <div>
+                  <span>{{ stat.name }}</span>
+                  <strong>{{ stat.count }}</strong>
+                </div>
+                <p><i [style.width.%]="stat.percent"></i></p>
+              </div>
+            }
+          </div>
+        </article>
+      } @else {
+        <article class="panel-card mission-panel">
+          <div class="panel-heading">
+            <span>Experiencia</span>
+            <h2>{{ role === 'ESTUDIANTE' ? 'Próximo paso sugerido' : 'Foco de trabajo' }}</h2>
+          </div>
+          <p>
+            @if (role === 'ESTUDIANTE') {
+              Elige un evento, reserva tu cupo y vuelve a revisar tus participaciones. La idea es que el usuario sienta camino, no solo una lista.
+            } @else if (role === 'DOCENTE') {
+              Revisa las sesiones próximas y prepara una dinámica corta para que la práctica se sienta guiada y cercana.
+            } @else {
+              Crea eventos con cupos claros, modalidad definida y una descripción que invite a participar.
+            }
+          </p>
+          <div class="pulse-line"><span></span></div>
+        </article>
+      }
+
+      <article class="panel-card timeline-panel">
+        <div class="panel-heading">
+          <span>Agenda viva</span>
+          <h2>Próximos encuentros</h2>
+        </div>
+
+        @if (upcomingEvents.length) {
+          <div class="timeline">
+            @for (event of upcomingEvents; track trackByEvent($index, event)) {
+              <a routerLink="/agenda" class="timeline-item">
+                <span></span>
+                <div>
+                  <strong>{{ event.titulo }}</strong>
+                  <p>{{ event.modalidad }} · {{ event.estado }}</p>
+                </div>
+              </a>
+            }
+          </div>
+        } @else {
+          <p class="empty-state">Aún no hay próximos eventos cargados. Puedes revisar la agenda o crear uno nuevo.</p>
+        }
+      </article>
+    </div>
+  }
+</section>

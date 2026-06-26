@@ -1,0 +1,150 @@
+<section class="detail-page">
+  <div class="list-hero">
+    <div class="hero-copy-wrap">
+      <div class="hero-icon" aria-hidden="true">
+        <mat-icon>{{ pageIcon }}</mat-icon>
+      </div>
+
+      <div class="hero-copy">
+        <span>{{ countText }}</span>
+        <h1>{{ title() }}</h1>
+        <p>{{ description() }}</p>
+      </div>
+    </div>
+
+    <div class="actions">
+      @if (canCreate()) {
+        <a class="primary-action" mat-flat-button [routerLink]="[basePath(), 'insert']">
+          <mat-icon>add_circle</mat-icon>
+          Nuevo registro
+        </a>
+      }
+      <button class="ghost-action" mat-button type="button" (click)="reload.emit()">
+        <mat-icon>refresh</mat-icon>
+        Actualizar datos
+      </button>
+    </div>
+  </div>
+
+  @if (!loading() && !error() && rows().length) {
+    <div class="search-panel">
+      <div class="search-box">
+        <mat-icon>search</mat-icon>
+        <input
+          type="search"
+          [value]="searchTerm"
+          (input)="updateSearch($any($event.target).value)"
+          placeholder="Buscar por nombre, correo, fecha, estado..."
+          aria-label="Buscar registros"
+        />
+      </div>
+      <span>{{ filteredCountText }}</span>
+    </div>
+  }
+
+  @if (loading()) {
+    <mat-card class="state-card">
+      <mat-card-content>
+        <span class="state-orb"><mat-icon aria-hidden="true">hourglass_top</mat-icon></span>
+        <div>
+          <strong>Cargando datos...</strong>
+          <p>Estamos consultando la información registrada.</p>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  } @else if (error()) {
+    <mat-card class="state-card error-state">
+      <mat-card-content>
+        <span class="state-orb"><mat-icon aria-hidden="true">error</mat-icon></span>
+        <div>
+          <strong>No se pudo cargar</strong>
+          <p>{{ error() }}</p>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  } @else if (!rows().length) {
+    <mat-card class="state-card empty-state">
+      <mat-card-content>
+        <span class="state-orb"><mat-icon aria-hidden="true">inventory_2</mat-icon></span>
+        <div>
+          <strong>No hay registros todavía</strong>
+          <p>Cuando haya información disponible, aparecerá aquí con sus detalles.</p>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  } @else if (!filteredRows.length) {
+    <mat-card class="state-card empty-state">
+      <mat-card-content>
+        <span class="state-orb"><mat-icon aria-hidden="true">search_off</mat-icon></span>
+        <div>
+          <strong>No encontramos coincidencias</strong>
+          <p>Prueba con otro nombre, fecha, correo o estado.</p>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  } @else {
+    <div class="detail-list">
+      @for (row of filteredRows; track getId(row)) {
+        <mat-card class="detail-card" [class.expanded]="isExpanded(row)">
+          <div class="accent-bar"></div>
+
+          <mat-card-content>
+            <button class="record-summary" type="button" (click)="toggleRow(row)" [attr.aria-expanded]="isExpanded(row)">
+              <div class="record-main">
+                <span>{{ title() }}</span>
+                <strong>{{ primaryValue(row) }}</strong>
+              </div>
+              <div class="summary-side">
+                <span class="id-badge">#{{ getId(row) }}</span>
+                <mat-icon>{{ isExpanded(row) ? 'expand_less' : 'expand_more' }}</mat-icon>
+              </div>
+            </button>
+
+            <div class="summary-fields">
+              @for (column of summaryColumns(row); track column.key) {
+                <div>
+                  <mat-icon aria-hidden="true">{{ fieldIcon(column.key) }}</mat-icon>
+                  <span>{{ column.label }}</span>
+                  <strong>{{ displayValue(row, column.key) }}</strong>
+                </div>
+              }
+            </div>
+
+            @if (isExpanded(row)) {
+              <dl class="expanded-details">
+                @for (column of columns(); track column.key) {
+                <div class="detail-row">
+                  <dt>
+                    <mat-icon aria-hidden="true">{{ fieldIcon(column.key) }}</mat-icon>
+                    {{ column.label }}
+                  </dt>
+                  <dd>{{ displayValue(row, column.key) }}</dd>
+                </div>
+                }
+              </dl>
+            }
+          </mat-card-content>
+
+          <mat-card-actions align="end">
+            @for (action of extraActions(); track action.label) {
+              <a mat-flat-button color="primary" class="extra-action" [routerLink]="action.link(row)" [queryParams]="getActionQueryParams(action, row)">
+                <mat-icon>event_available</mat-icon>
+                {{ action.label }}
+              </a>
+            }
+            @if (canModify()) {
+              <a mat-button [routerLink]="[basePath(), 'update', getId(row)]">
+                <mat-icon>edit</mat-icon>
+                Modificar
+              </a>
+              <button mat-button color="warn" type="button" (click)="removeRow(row)">
+                <mat-icon>delete</mat-icon>
+                Eliminar
+              </button>
+            }
+          </mat-card-actions>
+        </mat-card>
+      }
+    </div>
+  }
+</section>

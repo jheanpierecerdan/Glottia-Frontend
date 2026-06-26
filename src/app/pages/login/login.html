@@ -1,0 +1,23 @@
+<section class="login-shell">
+  <a routerLink="/" class="back-link"><mat-icon>arrow_back</mat-icon> Volver al inicio</a>
+  <div class="login-card">
+    <div class="login-art" aria-hidden="true">
+      <img src="assets/imagenes/LogoBlanco.png" alt="" />
+      <h1>Continúa tu experiencia lingüística</h1>
+      <p>Accede a tu agenda, reservas y encuentros disponibles.</p>
+    </div>
+    <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+      <span class="eyebrow">Bienvenido de vuelta</span>
+      <h2>Iniciar sesión</h2>
+      <p class="intro">Te llevaremos automáticamente al espacio correspondiente a tu rol.</p>
+      @if (error) { <p class="error" role="alert">{{ error }}</p> }
+      <label>Correo electrónico<input type="email" formControlName="correo" autocomplete="email" placeholder="tu@correo.com" /></label>
+      <label>Contraseña
+        <span class="password-field"><input [type]="showPassword ? 'text' : 'password'" formControlName="contrasena" autocomplete="current-password" placeholder="Tu contraseña" /><button type="button" (click)="showPassword = !showPassword" [attr.aria-label]="showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'"><mat-icon>{{ showPassword ? 'visibility_off' : 'visibility' }}</mat-icon></button></span>
+      </label>
+      <button class="submit" type="submit" [disabled]="loading">{{ loading ? 'Ingresando…' : 'Entrar a Glottia' }} <mat-icon>arrow_forward</mat-icon></button>
+      <p class="hint">Usa el correo con el que te registraste en Glottia.</p>
+      <p class="register-prompt">¿Aún no tienes una cuenta? <a routerLink="/register">Regístrate aquí</a></p>
+    </form>
+  </div>
+</section>

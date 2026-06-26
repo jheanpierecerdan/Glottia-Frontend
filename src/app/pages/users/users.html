@@ -1,0 +1,84 @@
+<section class="community-shell">
+  <div class="community-hero">
+    <div>
+      <a routerLink="/panel" class="back-link">
+        <mat-icon>arrow_back</mat-icon>
+        Volver al panel
+      </a>
+      <span>Comunidad Glottia</span>
+      <h1>Usuarios registrados</h1>
+      <p>Vista real de las personas que forman parte de la plataforma, organizada por estado, rol y últimos registros.</p>
+    </div>
+
+    <div class="community-counter">
+      <mat-icon>groups</mat-icon>
+      <strong>{{ users.length }}</strong>
+      <small>usuarios</small>
+    </div>
+  </div>
+
+  <div class="community-metrics">
+    <article>
+      <span><mat-icon>verified_user</mat-icon></span>
+      <strong>{{ activeUsers }}</strong>
+      <p>Activos</p>
+    </article>
+    <article>
+      <span><mat-icon>person_off</mat-icon></span>
+      <strong>{{ inactiveUsers }}</strong>
+      <p>Inactivos</p>
+    </article>
+    <article>
+      <span><mat-icon>school</mat-icon></span>
+      <strong>{{ roleSummary[0]?.count || 0 }}</strong>
+      <p>Rol principal: {{ roleSummary[0]?.label || 'Sin datos' }}</p>
+    </article>
+  </div>
+
+  <div class="community-grid">
+    <article class="community-card roles-card">
+      <div class="section-title">
+        <span>Distribución</span>
+        <h2>Usuarios por rol</h2>
+      </div>
+
+      <div class="role-list">
+        @for (role of roleSummary; track role.label) {
+          <div class="role-row">
+            <span class="role-icon"><mat-icon>{{ role.icon }}</mat-icon></span>
+            <div>
+              <p><strong>{{ role.label }}</strong><b>{{ role.count }}</b></p>
+              <i><em [style.width.%]="role.percent"></em></i>
+            </div>
+          </div>
+        }
+      </div>
+    </article>
+
+    <article class="community-card members-card">
+      <div class="section-title">
+        <span>Actividad</span>
+        <h2>Últimos usuarios registrados</h2>
+      </div>
+
+      <div class="member-list">
+        @for (user of newestUsers; track user.idUsuario) {
+          <div class="member-card">
+            <span class="avatar">{{ userInitials(user) }}</span>
+            <div>
+              <strong>{{ user.nombre }} {{ user.apellido }}</strong>
+              <p>{{ user.correo }}</p>
+              <small>{{ roleName(user.idRol) }} · {{ user.ciudad || 'Ciudad no registrada' }}</small>
+            </div>
+            <span class="status" [class.off]="user.estado === false">{{ user.estado === false ? 'Inactivo' : 'Activo' }}</span>
+          </div>
+        } @empty {
+          <p class="empty-community">Aún no hay usuarios registrados.</p>
+        }
+      </div>
+    </article>
+  </div>
+</section>
+
+<app-resource-list title="Gestión completa de usuarios" description="Tabla administrativa para crear, editar o revisar registros."
+  basePath="/usuarios" idKey="idUsuario" [columns]="columns" [rows]="rows" [loading]="loading" [error]="error" (reload)="cargarUsuarios()" (remove)="eliminarUsuario($event)" />

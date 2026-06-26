@@ -1,0 +1,43 @@
+<section class="prep-shell">
+  <div class="prep-hero">
+    <div>
+      <a routerLink="/panel" class="prep-back"><mat-icon>arrow_back</mat-icon> Volver al panel</a>
+      <span>Preparación docente</span>
+      <h1>Preparar sesión</h1>
+      <p>Una vista pensada para que la sesión no sea solo un evento en una tabla, sino una experiencia guiada.</p>
+    </div>
+    <div class="prep-orb"><mat-icon>school</mat-icon><strong>{{ events.length }}</strong><small>próximas</small></div>
+  </div>
+
+  <div class="prep-grid">
+    <article class="prep-card">
+      <span class="section-kicker">Guía rápida</span>
+      <h2>Antes de iniciar</h2>
+      <div class="prep-list">
+        @for (item of checklist; track item.title) {
+          <div>
+            <span><mat-icon>{{ item.icon }}</mat-icon></span>
+            <strong>{{ item.title }}</strong>
+            <p>{{ item.text }}</p>
+          </div>
+        }
+      </div>
+    </article>
+
+    <article class="prep-card">
+      <span class="section-kicker">Agenda docente</span>
+      <h2>Sesiones próximas</h2>
+      <div class="event-prep-list">
+        @for (event of events; track event.idEvento) {
+          <a routerLink="/agenda">
+            <strong>{{ event.titulo }}</strong>
+            <p>{{ eventDate(event) }} · {{ event.modalidad }}</p>
+            <small>{{ event.estado }}</small>
+          </a>
+        } @empty {
+          <p class="empty-prep">No hay sesiones próximas por ahora.</p>
+        }
+      </div>
+    </article>
+  </div>
+</section>

@@ -1,0 +1,2 @@
+<app-resource-list title="Intereses de usuario" description="Intereses asociados a usuarios."
+  basePath="/usuarios-intereses" idKey="idUsuarioInteres" [columns]="columns" [rows]="rows" [loading]="loading" [error]="error" (reload)="cargarInteresesDeUsuario()" (remove)="eliminarInteresDeUsuario($event)" />
