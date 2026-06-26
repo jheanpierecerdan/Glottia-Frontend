@@ -1,0 +1,48 @@
+<section class="admin-module-shell">
+  <div class="admin-module-hero">
+    <div>
+      <a routerLink="/panel" class="module-back"><mat-icon>arrow_back</mat-icon> Volver al panel</a>
+      <span>Configuración de acceso</span>
+      <h1>Roles del sistema</h1>
+      <p>Define qué puede ver y hacer cada tipo de usuario dentro de Glottia.</p>
+    </div>
+    <div class="module-counter"><mat-icon>admin_panel_settings</mat-icon><strong>{{ roles.length }}</strong><small>roles</small></div>
+  </div>
+
+  <div class="module-focus-grid">
+    <article class="module-focus-card">
+      <span class="section-kicker">Permisos necesarios</span>
+      <h2>Matriz rápida de acceso</h2>
+      <div class="permission-list">
+        @for (permission of permissionCards; track permission.title) {
+          <div class="permission-row">
+            <span><mat-icon>{{ permission.icon }}</mat-icon></span>
+            <div>
+              <strong>{{ permission.title }}</strong>
+              <p>{{ permission.description }}</p>
+            </div>
+          </div>
+        }
+      </div>
+    </article>
+
+    <article class="module-focus-card">
+      <span class="section-kicker">Roles registrados</span>
+      <h2>Configurados en base de datos</h2>
+      <div class="module-card-grid single">
+        @for (role of roles; track role.idRol) {
+          <article class="module-chip-card">
+            <span><mat-icon>{{ roleIcon(role) }}</mat-icon></span>
+            <div>
+              <strong>{{ role.nombre }}</strong>
+              <p>{{ role.descripcion }}</p>
+            </div>
+          </article>
+        }
+      </div>
+    </article>
+  </div>
+</section>
+
+<app-resource-list title="Gestión completa de roles" description="Roles y permisos disponibles."
+  basePath="/roles" idKey="idRol" [columns]="columns" [rows]="rows" [loading]="loading" [error]="error" (reload)="cargarRoles()" (remove)="eliminarRol($event)" />

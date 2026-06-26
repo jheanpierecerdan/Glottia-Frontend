@@ -1,0 +1,2 @@
+<app-resource-list title="Eventos" description="Encuentros virtuales y presenciales."
+  basePath="/eventos" idKey="idEvento" [columns]="columns" [rows]="rows" [loading]="loading" [error]="error" [extraActions]="actions" [canCreate]="canManage()" [canModify]="canManage()" (reload)="cargarEventos()" (remove)="eliminarEvento($event)" />

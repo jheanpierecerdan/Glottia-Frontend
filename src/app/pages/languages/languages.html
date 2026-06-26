@@ -1,0 +1,50 @@
+<section class="admin-module-shell">
+  <div class="admin-module-hero">
+    <div>
+      <a routerLink="/panel" class="module-back"><mat-icon>arrow_back</mat-icon> Volver al panel</a>
+      <span>Catálogo lingüístico</span>
+      <h1>Idiomas disponibles</h1>
+      <p>Administra los idiomas que aparecen en eventos, perfiles y experiencias conversacionales.</p>
+    </div>
+    <div class="module-counter"><mat-icon>translate</mat-icon><strong>{{ languages.length }}</strong><small>idiomas</small></div>
+  </div>
+
+  <div class="module-metrics">
+    <article><mat-icon>language</mat-icon><strong>{{ languages.length }}</strong><p>Total registrados</p></article>
+    <article><mat-icon>qr_code_2</mat-icon><strong>{{ codedLanguages }}</strong><p>Con código ISO</p></article>
+    <article><mat-icon>auto_awesome</mat-icon><strong>{{ languages.length - codedLanguages }}</strong><p>Por completar</p></article>
+  </div>
+
+  <div class="module-focus-grid">
+    <article class="module-focus-card">
+      <span class="section-kicker">Uso real</span>
+      <h2>Idiomas con actividad</h2>
+      <div class="usage-list">
+        @for (insight of insights.slice(0, 6); track insight.language.idIdioma) {
+          <div class="usage-row">
+            <span>{{ insight.language.codigoIso || 'GL' }}</span>
+            <div>
+              <strong>{{ insight.language.nombre }}</strong>
+              <p>{{ insight.events }} eventos · {{ insight.learners }} usuarios asociados</p>
+            </div>
+          </div>
+        } @empty {
+          <p class="module-empty">Todavía no hay idiomas cargados.</p>
+        }
+      </div>
+    </article>
+
+    <article class="module-focus-card">
+      <span class="section-kicker">Necesario para eventos</span>
+      <h2>Qué debe controlar admin</h2>
+      <div class="admin-checklist">
+        <p><mat-icon>check_circle</mat-icon> Nombre del idioma claro.</p>
+        <p><mat-icon>check_circle</mat-icon> Código ISO para orden y filtros.</p>
+        <p><mat-icon>check_circle</mat-icon> Descripción corta para orientar al usuario.</p>
+      </div>
+    </article>
+  </div>
+</section>
+
+<app-resource-list title="Gestión completa de idiomas" description="Idiomas disponibles en la plataforma."
+  basePath="/idiomas" idKey="idIdioma" [columns]="columns" [rows]="rows" [loading]="loading" [error]="error" (reload)="cargarIdiomas()" (remove)="eliminarIdioma($event)" />

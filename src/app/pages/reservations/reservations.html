@@ -1,0 +1,62 @@
+<section class="admin-module-shell">
+  <div class="admin-module-hero">
+    <div>
+      <a routerLink="/panel" class="module-back"><mat-icon>arrow_back</mat-icon> Volver al panel</a>
+      <span>Participación</span>
+      <h1>{{ pageTitle }}</h1>
+      <p>{{ pageDescription }}</p>
+    </div>
+    <div class="module-counter"><mat-icon>confirmation_number</mat-icon><strong>{{ visibleReservations.length }}</strong><small>reservas</small></div>
+  </div>
+
+  <div class="module-metrics">
+    <article><mat-icon>verified</mat-icon><strong>{{ confirmedCount }}</strong><p>Confirmadas/activas</p></article>
+    <article><mat-icon>pending_actions</mat-icon><strong>{{ pendingCount }}</strong><p>Por revisar</p></article>
+    <article><mat-icon>event_seat</mat-icon><strong>{{ visibleReservations.length }}</strong><p>Total visibles</p></article>
+  </div>
+
+  <article class="reservation-calendar">
+    <div class="reservation-calendar-head">
+      <div>
+        <span class="section-kicker">Calendario de reservas</span>
+        <h2>{{ monthTitle }}</h2>
+      </div>
+      <div>
+        <button type="button" (click)="previousMonth()"><mat-icon>chevron_left</mat-icon></button>
+        <button type="button" (click)="nextMonth()"><mat-icon>chevron_right</mat-icon></button>
+      </div>
+    </div>
+
+    <div class="reservation-calendar-grid">
+      @for (dayName of weekDays; track dayName) {
+        <span class="week-label">{{ dayName }}</span>
+      }
+      @for (day of reservationDays; track trackDay($index, day)) {
+        <div class="reservation-day" [class.muted]="!day.currentMonth" [class.today]="day.today" [class.has-reservation]="day.reservations.length">
+          <strong>{{ day.number }}</strong>
+          @for (reservation of day.reservations.slice(0, 2); track reservation.idReserva) {
+            <span>{{ eventName(reservation.idEvento) }}</span>
+          }
+        </div>
+      }
+    </div>
+  </article>
+
+  <div class="reservation-stream">
+    @for (reservation of recentReservations; track reservation.idReserva) {
+      <article>
+        <span><mat-icon>bookmark_added</mat-icon></span>
+        <div>
+          <strong>Reserva #{{ reservation.idReserva }}</strong>
+          <p>{{ userName(reservation.idUsuario) }} · {{ eventName(reservation.idEvento) }}</p>
+          <small>{{ reservation.estadoReserva }} · {{ reservation.fechaReserva }}</small>
+        </div>
+      </article>
+    } @empty {
+      <p class="module-empty">Todavía no hay reservas registradas.</p>
+    }
+  </div>
+</section>
+
+<app-resource-list [title]="auth.role() === 'ESTUDIANTE' ? 'Detalle de mis reservas' : 'Gestión completa de reservas'" description="Inscripciones de usuarios a eventos."
+  basePath="/reservas" idKey="idReserva" [columns]="columns" [rows]="rows" [loading]="loading" [error]="error" (reload)="cargarReservas()" (remove)="eliminarReserva($event)" />

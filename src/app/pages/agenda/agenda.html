@@ -1,0 +1,105 @@
+<section class="agenda-shell">
+  <div class="agenda-hero">
+    <div>
+      <a routerLink="/panel" class="back-link">
+        <mat-icon>arrow_back</mat-icon>
+        Volver al panel
+      </a>
+      <span class="eyebrow">Agenda Glottia</span>
+      <h1>Calendario de eventos</h1>
+      <p>Los encuentros aparecen directamente en su fecha real para que la agenda se sienta viva y fácil de revisar.</p>
+    </div>
+
+    <div class="hero-stat">
+      <mat-icon>calendar_month</mat-icon>
+      <strong>{{ monthEvents.length }}</strong>
+      <span>eventos este mes</span>
+    </div>
+  </div>
+
+  <div class="calendar-card">
+    <div class="calendar-toolbar">
+      <button type="button" (click)="previousMonth()" aria-label="Mes anterior">
+        <mat-icon>chevron_left</mat-icon>
+      </button>
+      <div>
+        <span>Vista mensual</span>
+        <h2>{{ monthTitle }}</h2>
+      </div>
+      <div class="toolbar-actions">
+        <button type="button" class="today" (click)="goToday()">Hoy</button>
+        <button type="button" (click)="nextMonth()" aria-label="Mes siguiente">
+          <mat-icon>chevron_right</mat-icon>
+        </button>
+      </div>
+    </div>
+
+    @if (loading) {
+      <div class="agenda-loading">
+        <span></span>
+        Cargando eventos reales...
+      </div>
+    } @else {
+      @if (error) {
+        <p class="agenda-error">{{ error }}</p>
+      }
+
+      <div class="agenda-layout">
+        <div class="calendar-grid">
+          @for (dayName of weekDays; track dayName) {
+            <div class="weekday">{{ dayName }}</div>
+          }
+
+          @for (day of days; track trackDay($index, day)) {
+            <button
+              type="button"
+              class="day-cell"
+              [class.muted]="!day.currentMonth"
+              [class.today]="day.today"
+              [class.has-events]="day.events.length > 0"
+              [class.selected]="selectedDay?.key === day.key"
+              (click)="selectDay(day)"
+            >
+              <span class="day-number">{{ day.number }}</span>
+              <div class="day-events">
+                @for (event of day.events.slice(0, 2); track trackEvent($index, event)) {
+                  <span class="event-pill">{{ event.titulo }}</span>
+                }
+                @if (day.events.length > 2) {
+                  <span class="more-pill">+{{ day.events.length - 2 }} más</span>
+                }
+              </div>
+            </button>
+          }
+        </div>
+
+        <aside class="day-detail">
+          <span class="eyebrow">Detalle del día</span>
+          @if (selectedDay) {
+            <h3>{{ selectedDay.date | date:'EEEE d MMMM':'':'es-PE' }}</h3>
+            @if (selectedDay.events.length) {
+              <div class="detail-list">
+                @for (event of selectedDay.events; track trackEvent($index, event)) {
+                  <article class="detail-event">
+                    <span>{{ eventTime(event) }}</span>
+                    <strong>{{ event.titulo }}</strong>
+                    <p>{{ event.modalidad }} · {{ event.estado }}</p>
+                    @if (event.ubicacion) {
+                      <small><mat-icon>location_on</mat-icon>{{ event.ubicacion }}</small>
+                    }
+                  </article>
+                }
+              </div>
+            } @else {
+              <p class="empty-day">Ese día no tiene eventos. Puedes moverte por el calendario o volver al panel.</p>
+            }
+          }
+          <a routerLink="/eventos" class="list-link">
+            Ver lista completa
+            <mat-icon>arrow_forward</mat-icon>
+          </a>
+        </aside>
+      </div>
+    }
+  </div>
+</section>
