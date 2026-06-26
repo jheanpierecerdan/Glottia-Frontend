@@ -1,0 +1,50 @@
+<section class="admin-module-shell">
+  <div class="admin-module-hero">
+    <div>
+      <a routerLink="/panel" class="module-back"><mat-icon>arrow_back</mat-icon> Volver al panel</a>
+      <span>Conexión de comunidad</span>
+      <h1>Intereses</h1>
+      <p>Estos intereses ayudan a que los usuarios encuentren eventos y personas con afinidad real.</p>
+    </div>
+    <div class="module-counter"><mat-icon>interests</mat-icon><strong>{{ interests.length }}</strong><small>intereses</small></div>
+  </div>
+
+  <div class="module-metrics">
+    <article><mat-icon>hub</mat-icon><strong>{{ interests.length }}</strong><p>Total registrados</p></article>
+    <article><mat-icon>notes</mat-icon><strong>{{ describedInterests }}</strong><p>Con descripción</p></article>
+    <article><mat-icon>edit_note</mat-icon><strong>{{ interests.length - describedInterests }}</strong><p>Por completar</p></article>
+  </div>
+
+  <div class="module-focus-grid">
+    <article class="module-focus-card">
+      <span class="section-kicker">Afinidades reales</span>
+      <h2>Intereses más usados</h2>
+      <div class="usage-list">
+        @for (insight of insights.slice(0, 7); track insight.interest.idInteres) {
+          <div class="usage-row">
+            <span><mat-icon>hub</mat-icon></span>
+            <div>
+              <strong>{{ insight.interest.nombre }}</strong>
+              <p>{{ insight.users }} usuarios vinculados</p>
+            </div>
+          </div>
+        } @empty {
+          <p class="module-empty">Todavía no hay intereses asociados a usuarios.</p>
+        }
+      </div>
+    </article>
+
+    <article class="module-focus-card">
+      <span class="section-kicker">Nube de intereses</span>
+      <h2>Temas disponibles</h2>
+      <div class="interest-cloud">
+        @for (interest of interests.slice(0, 14); track interest.idInteres) {
+          <span>{{ interest.nombre }}</span>
+        }
+      </div>
+    </article>
+  </div>
+</section>
+
+<app-resource-list title="Gestión completa de intereses" description="Intereses usados para conectar usuarios."
+  basePath="/intereses" idKey="idInteres" [columns]="columns" [rows]="rows" [loading]="loading" [error]="error" (reload)="cargarIntereses()" (remove)="eliminarInteres($event)" />

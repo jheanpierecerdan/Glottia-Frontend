@@ -1,0 +1,109 @@
+<section class="form-page" [class.delete-mode]="isDelete">
+  <div class="form-hero">
+    <div class="hero-copy-wrap">
+      <div class="hero-icon" aria-hidden="true">
+        <mat-icon>{{ formIcon }}</mat-icon>
+      </div>
+
+      <div class="hero-copy">
+        <span>{{ modeLabel }}</span>
+        <h1>{{ title() }}</h1>
+        <p>{{ description() }}</p>
+      </div>
+    </div>
+
+    <a mat-button class="back-action" [routerLink]="[basePath()]">
+      <mat-icon>arrow_back</mat-icon>
+      Volver
+    </a>
+  </div>
+
+  @if (loading) {
+    <mat-card class="state-card">
+      <mat-card-content>
+        <mat-icon aria-hidden="true">hourglass_top</mat-icon>
+        <div>
+          <strong>Cargando registro...</strong>
+          <p>Estamos preparando la información para mostrarla en el formulario.</p>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  } @else {
+    <mat-card class="form-card">
+      <div class="accent-bar"></div>
+
+      <mat-card-content>
+        @if (error) {
+          <p class="error" role="alert">
+            <mat-icon aria-hidden="true">error</mat-icon>
+            {{ error }}
+          </p>
+        }
+
+        @if (isDelete) {
+          <p class="delete-text">
+            <mat-icon aria-hidden="true">warning</mat-icon>
+            Confirma la eliminación del registro seleccionado.
+          </p>
+          @if (record) {
+            <pre>{{ record | json }}</pre>
+          }
+        } @else {
+          <form [formGroup]="form" class="form-grid" (ngSubmit)="save()">
+            @for (field of fields(); track field.key) {
+              @if (field.type === 'checkbox') {
+                <mat-checkbox class="field-checkbox" [formControlName]="field.key">
+                  <mat-icon aria-hidden="true">{{ fieldIcon(field) }}</mat-icon>
+                  {{ field.label }}
+                </mat-checkbox>
+              } @else if (field.type === 'select') {
+                <mat-form-field appearance="outline">
+                  <mat-label>{{ field.label }}</mat-label>
+                  <mat-icon matPrefix aria-hidden="true">{{ fieldIcon(field) }}</mat-icon>
+                  <mat-select [formControlName]="field.key">
+                    @for (option of field.options ?? []; track option.value) {
+                      <mat-option [value]="option.value">{{ option.label }}</mat-option>
+                    }
+                  </mat-select>
+                  @if (field.required) {
+                    <mat-hint>Obligatorio</mat-hint>
+                  }
+                  @if (hasError(field)) {
+                    <mat-error>Campo inválido</mat-error>
+                  }
+                </mat-form-field>
+              } @else {
+                <mat-form-field appearance="outline" [class.full]="field.type === 'textarea'">
+                  <mat-label>{{ field.label }}</mat-label>
+                  <mat-icon matPrefix aria-hidden="true">{{ fieldIcon(field) }}</mat-icon>
+                  @if (field.type === 'textarea') {
+                    <textarea matInput rows="4" [formControlName]="field.key"></textarea>
+                  } @else {
+                    <input matInput [type]="field.type ?? 'text'" [formControlName]="field.key" />
+                  }
+                  @if (field.required) {
+                    <mat-hint>Obligatorio</mat-hint>
+                  }
+                  @if (hasError(field)) {
+                    <mat-error>Campo inválido</mat-error>
+                  }
+                </mat-form-field>
+              }
+            }
+          </form>
+        }
+      </mat-card-content>
+
+      <mat-card-actions align="end">
+        <a mat-button class="cancel-action" [routerLink]="[basePath()]">
+          <mat-icon>close</mat-icon>
+          Cancelar
+        </a>
+        <button mat-flat-button color="primary" type="button" [disabled]="saving || (mode() === 'update' && !form.dirty)" (click)="save()">
+          <mat-icon>{{ actionIcon }}</mat-icon>
+          {{ actionLabel }}
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  }
+</section>

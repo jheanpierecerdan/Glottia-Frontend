@@ -1,0 +1,34 @@
+import { Component } from '@angular/core';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Router, RouterLink } from '@angular/router';
+import { finalize } from 'rxjs';
+import { MatIconModule } from '@angular/material/icon';
+import { HttpErrorResponse } from '@angular/common/http';
+import { AuthService } from '../../services/auth.service';
+import { SoundService } from '../../services/sound.service';
+@Component({ selector: 'app-login', imports: [ReactiveFormsModule, RouterLink, MatIconModule], templateUrl: './login.html', styleUrl: './login.scss' })
+export class Login {
+  readonly form = new FormGroup({
+    correo: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.email] }),
+    contrasena: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
+  });
+  loading = false;
+  error = '';
+  showPassword = false;
+  constructor(private readonly auth: AuthService, private readonly router: Router, private readonly sound: SoundService) {
+    if (auth.isAuthenticated()) void router.navigateByUrl(auth.landingFor());
+  }
+  submit(): void {
+    if (this.form.invalid) { this.form.markAllAsTouched(); return; }
+    this.loading = true; this.error = '';
+    const { correo, contrasena } = this.form.getRawValue();
+    this.auth.login(correo, contrasena).pipe(finalize(() => this.loading = false)).subscribe({
+      next: (session) => { this.sound.success(); void this.router.navigateByUrl(this.auth.landingFor(session.rol)); },
+      error: (response: HttpErrorResponse) => {
+        this.error = response.status === 0 || response.status === 404 || response.status >= 500
+          ? 'El servidor no está disponible. Verifica que el backend esté activo o que la URL de Render sea correcta.'
+          : 'Correo o contraseña incorrectos. Revisa tus datos e inténtalo otra vez.';
+      },
+    });
+  }
+}
