@@ -1,0 +1,271 @@
+<!-- NAVBAR -->
+<header class="navbar">
+  <div class="navbar__inner">
+    <a class="navbar__logo" href="#">
+      <span class="navbar__logo-icon">G</span>
+      <span class="navbar__logo-text">glottia</span>
+    </a>
+    <nav class="navbar__links">
+      <a href="#features">Características</a>
+      <a href="#how">¿Cómo funciona?</a>
+      <a href="#pricing">Precios</a>
+      <a href="#testimonials">Testimonios</a>
+    </nav>
+    <div class="navbar__actions">
+      <button mat-button class="navbar__login">Iniciar sesión</button>
+      <button mat-flat-button class="navbar__cta">Empezar gratis</button>
+    </div>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero__bg-orb hero__bg-orb--1"></div>
+  <div class="hero__bg-orb hero__bg-orb--2"></div>
+  <div class="hero__content">
+    <div class="hero__badge">
+      <mat-icon>auto_awesome</mat-icon>
+      <span>Potenciado por Inteligencia Artificial</span>
+    </div>
+    <h1 class="hero__title">
+      Aprende idiomas<br>
+      <span class="hero__title--accent">de forma inteligente</span>
+    </h1>
+    <p class="hero__subtitle">
+      Glottia personaliza cada lección con IA para que aprendas más rápido,
+      practiques con hablantes nativos y alcances la fluidez que siempre quisiste.
+    </p>
+    <div class="hero__actions">
+      <button mat-flat-button class="btn-primary-lg">
+        <mat-icon>rocket_launch</mat-icon>
+        Comenzar gratis
+      </button>
+      <button mat-stroked-button class="btn-outline-lg">
+        <mat-icon>play_circle</mat-icon>
+        Ver demo
+      </button>
+    </div>
+    <div class="hero__langs">
+      @for (lang of languages; track lang) {
+        <span class="lang-chip">{{ lang }}</span>
+      }
+    </div>
+  </div>
+  <div class="hero__visual">
+    <div class="app-mockup">
+      <div class="mockup__header">
+        <div class="mockup__dots">
+          <span></span><span></span><span></span>
+        </div>
+        <span class="mockup__title">Glottia App</span>
+      </div>
+      <div class="mockup__body">
+        <div class="mockup__lesson">
+          <div class="mockup__progress-bar">
+            <div class="mockup__progress-fill"></div>
+          </div>
+          <p class="mockup__label">Lección 12 — Vocabulario cotidiano</p>
+          <div class="mockup__word-card">
+            <span class="mockup__word">Bonjour</span>
+            <span class="mockup__translation">Buenos días</span>
+          </div>
+          <div class="mockup__options">
+            <button class="mockup__option mockup__option--correct">Buenos días ✓</button>
+            <button class="mockup__option">Buenas noches</button>
+            <button class="mockup__option">Hasta luego</button>
+          </div>
+        </div>
+        <div class="mockup__streak">
+          <mat-icon>local_fire_department</mat-icon>
+          <span>Racha de <strong>21 días</strong></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section class="stats">
+  <div class="stats__inner">
+    @for (stat of stats; track stat.label) {
+      <div class="stat-item">
+        <span class="stat-item__value">{{ stat.value }}</span>
+        <span class="stat-item__label">{{ stat.label }}</span>
+      </div>
+    }
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features" id="features">
+  <div class="section-container">
+    <div class="section-header">
+      <span class="section-tag">Características</span>
+      <h2 class="section-title">Todo lo que necesitas<br>para dominar un idioma</h2>
+      <p class="section-subtitle">Herramientas diseñadas por expertos en lingüística y potenciadas por IA de última generación.</p>
+    </div>
+    <div class="features__grid">
+      @for (feature of features; track feature.title) {
+        <div class="feature-card">
+          <div class="feature-card__icon">
+            <mat-icon>{{ feature.icon }}</mat-icon>
+          </div>
+          <h3 class="feature-card__title">{{ feature.title }}</h3>
+          <p class="feature-card__desc">{{ feature.description }}</p>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how" id="how">
+  <div class="how__bg"></div>
+  <div class="section-container">
+    <div class="section-header">
+      <span class="section-tag">¿Cómo funciona?</span>
+      <h2 class="section-title">Empieza a hablar<br>en 3 simples pasos</h2>
+    </div>
+    <div class="how__steps">
+      @for (step of steps; track step.number) {
+        <div class="step-card">
+          <div class="step-card__number">{{ step.number }}</div>
+          <div class="step-card__icon-wrap">
+            <mat-icon>{{ step.icon }}</mat-icon>
+          </div>
+          <h3 class="step-card__title">{{ step.title }}</h3>
+          <p class="step-card__desc">{{ step.description }}</p>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials" id="testimonials">
+  <div class="section-container">
+    <div class="section-header">
+      <span class="section-tag">Testimonios</span>
+      <h2 class="section-title">Miles de historias<br>de éxito reales</h2>
+    </div>
+    <div class="testimonials__grid">
+      @for (t of testimonials; track t.name) {
+        <mat-card class="testimonial-card">
+          <div class="testimonial-card__top">
+            <div class="testimonial-card__stars">
+              @for (s of getStars(t.rating); track $index) {
+                <mat-icon class="star">star</mat-icon>
+              }
+            </div>
+            <span class="testimonial-card__lang">{{ t.lang }}</span>
+          </div>
+          <p class="testimonial-card__text">"{{ t.text }}"</p>
+          <div class="testimonial-card__author">
+            <div class="testimonial-card__avatar">{{ t.avatar }}</div>
+            <div>
+              <p class="testimonial-card__name">{{ t.name }}</p>
+              <p class="testimonial-card__role">{{ t.role }}</p>
+            </div>
+          </div>
+        </mat-card>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing" id="pricing">
+  <div class="pricing__bg"></div>
+  <div class="section-container">
+    <div class="section-header">
+      <span class="section-tag">Precios</span>
+      <h2 class="section-title">Un plan para cada objetivo</h2>
+      <p class="section-subtitle">Sin compromisos. Cancela cuando quieras. Prueba Pro gratis por 7 días.</p>
+    </div>
+    <div class="pricing__grid">
+      @for (plan of plans; track plan.name) {
+        <div class="price-card" [class.price-card--highlight]="plan.highlight">
+          @if (plan.badge) {
+            <div class="price-card__badge">{{ plan.badge }}</div>
+          }
+          <h3 class="price-card__name">{{ plan.name }}</h3>
+          <div class="price-card__price">
+            <span class="price-card__amount">{{ plan.price }}</span>
+            <span class="price-card__period">{{ plan.period }}</span>
+          </div>
+          <ul class="price-card__features">
+            @for (f of plan.features; track f) {
+              <li>
+                <mat-icon>check_circle</mat-icon>
+                {{ f }}
+              </li>
+            }
+          </ul>
+          <button
+            mat-flat-button
+            class="price-card__cta"
+            [class.price-card__cta--highlight]="plan.highlight"
+          >
+            {{ plan.cta }}
+          </button>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- CTA FINAL -->
+<section class="cta-final">
+  <div class="cta-final__inner">
+    <h2 class="cta-final__title">¿Listo para tu primer día?</h2>
+    <p class="cta-final__subtitle">Únete a 500,000 personas que ya aprendieron un nuevo idioma con Glottia.</p>
+    <button mat-flat-button class="btn-primary-lg btn-white">
+      <mat-icon>rocket_launch</mat-icon>
+      Comenzar gratis ahora
+    </button>
+    <p class="cta-final__note">Sin tarjeta de crédito requerida</p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer__inner">
+    <div class="footer__brand">
+      <a class="navbar__logo" href="#">
+        <span class="navbar__logo-icon">G</span>
+        <span class="navbar__logo-text">glottia</span>
+      </a>
+      <p>Aprende idiomas de forma inteligente con el poder de la IA.</p>
+    </div>
+    <div class="footer__links">
+      <div class="footer__col">
+        <h4>Producto</h4>
+        <a href="#">Características</a>
+        <a href="#">Precios</a>
+        <a href="#">Blog</a>
+        <a href="#">Changelog</a>
+      </div>
+      <div class="footer__col">
+        <h4>Empresa</h4>
+        <a href="#">Sobre nosotros</a>
+        <a href="#">Carreras</a>
+        <a href="#">Prensa</a>
+        <a href="#">Contacto</a>
+      </div>
+      <div class="footer__col">
+        <h4>Legal</h4>
+        <a href="#">Privacidad</a>
+        <a href="#">Términos</a>
+        <a href="#">Cookies</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer__bottom">
+    <p>© 2026 Glottia. Todos los derechos reservados.</p>
+    <div class="footer__socials">
+      <a href="#" aria-label="Twitter"><mat-icon>alternate_email</mat-icon></a>
+      <a href="#" aria-label="LinkedIn"><mat-icon>work</mat-icon></a>
+      <a href="#" aria-label="Instagram"><mat-icon>photo_camera</mat-icon></a>
+    </div>
+  </div>
+</footer>

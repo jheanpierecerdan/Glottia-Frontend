@@ -1,0 +1,57 @@
+@use '@angular/material' as mat;
+
+html {
+  @include mat.theme((
+    color: (
+      primary: mat.$blue-palette,
+      tertiary: mat.$cyan-palette,
+    ),
+    typography: Roboto,
+    density: 0,
+  ));
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background-color: #ffffff;
+  color: #0d1b2a;
+  scroll-behavior: smooth;
+}
+
+:root {
+  --blue-900: #0B2D78;
+  --blue-800: #1232A0;
+  --blue-700: #1565C0;
+  --blue-600: #1976D2;
+  --blue-500: #2196F3;
+  --blue-400: #42A5F5;
+  --blue-300: #64B5F6;
+  --blue-100: #BBDEFB;
+  --blue-50:  #E3F2FD;
+  --cyan-500: #00BCD4;
+  --cyan-400: #26C6DA;
+  --navy:     #0D1B2A;
+  --text-muted: #546E7A;
+  --white: #ffffff;
+  --section-pad: 96px 24px;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+  font-family: inherit;
+}
+
+section {
+  width: 100%;
+}
