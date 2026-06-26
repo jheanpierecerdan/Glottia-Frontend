@@ -1,0 +1,76 @@
+<section class="register-shell">
+  <a routerLink="/login" class="back-link"><mat-icon>arrow_back</mat-icon> Volver al inicio de sesión</a>
+
+  <div class="register-card">
+    <div class="register-copy" aria-hidden="true">
+      <img src="assets/imagenes/LogoBlanco.png" alt="" />
+      <span>Nuevo perfil</span>
+      <h1>Comienza tu recorrido en Glottia</h1>
+      <p>Crea tu cuenta para acceder a eventos, reservar cupos y participar en experiencias conversacionales.</p>
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+      <span class="eyebrow">Registro de usuario</span>
+      <h2>Crea tu cuenta</h2>
+      <p class="intro">Completa tus datos principales. Tu rol será asignado automáticamente como estudiante.</p>
+
+      @if (error) {
+        <p class="error" role="alert">{{ error }}</p>
+      }
+
+      <div class="form-grid">
+        <label>
+          Nombre
+          <input type="text" formControlName="nombre" autocomplete="given-name" placeholder="Tu nombre" />
+        </label>
+        <label>
+          Apellido
+          <input type="text" formControlName="apellido" autocomplete="family-name" placeholder="Tu apellido" />
+        </label>
+        <label class="full-field">
+          Correo electrónico
+          <input type="email" formControlName="correo" autocomplete="email" placeholder="tu@correo.com" />
+        </label>
+        <label class="full-field">
+          Contraseña
+          <span class="password-field">
+            <input [type]="showPassword ? 'text' : 'password'" formControlName="contrasena" autocomplete="new-password" placeholder="Mínimo 6 caracteres" />
+            <button type="button" (click)="showPassword = !showPassword" [attr.aria-label]="showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'">
+              <mat-icon>{{ showPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+            </button>
+          </span>
+          @if (form.controls.contrasena.value) {
+            <span class="strength-meter" [attr.data-level]="passwordStrength">
+              <span class="strength-bar"><i></i><i></i><i></i></span>
+              <span class="strength-label">{{ passwordStrengthLabel }}</span>
+            </span>
+          }
+        </label>
+        <label>
+          Ciudad
+          <input type="text" formControlName="ciudad" placeholder="Ciudad" />
+        </label>
+        <label>
+          Modalidad
+          <select formControlName="modalidad">
+            <option value="">Selecciona</option>
+            <option value="Presencial">Presencial</option>
+            <option value="Virtual">Virtual</option>
+            <option value="Mixta">Mixta</option>
+          </select>
+        </label>
+        <label class="full-field">
+          Presentación breve
+          <textarea rows="3" formControlName="biografia" placeholder="Cuéntanos qué idioma deseas fortalecer"></textarea>
+        </label>
+      </div>
+
+      <button class="submit" type="submit" [disabled]="loading">
+        {{ loading ? 'Creando cuenta…' : 'Registrarme' }}
+        <mat-icon>arrow_forward</mat-icon>
+      </button>
+
+      <p class="login-prompt">¿Ya tienes una cuenta? <a routerLink="/login">Inicia sesión</a></p>
+    </form>
+  </div>
+</section>
