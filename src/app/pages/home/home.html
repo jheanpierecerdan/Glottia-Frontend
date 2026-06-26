@@ -1,0 +1,501 @@
+<mat-toolbar class="menu-toolbar">
+  <a class="logo-link" routerLink="/" aria-label="Ir al inicio">
+    <img src="assets/imagenes/LogoBlanco.png" alt="Glottia" />
+    <span class="brand">GLOTTIA</span>
+  </a>
+
+  <span class="spacer"></span>
+
+  <nav class="links" aria-label="Menu principal">
+    <a mat-button routerLink="/" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }">
+      <mat-icon>home</mat-icon>
+      <span>Inicio</span>
+    </a>
+    <button mat-button type="button" (click)="goToSection('eventos')">
+      <mat-icon>event</mat-icon>
+      <span>Eventos</span>
+    </button>
+    <button mat-button type="button" (click)="goToSection('beneficios')">
+      <mat-icon>auto_awesome</mat-icon>
+      <span>Beneficios</span>
+    </button>
+    <button mat-button type="button" (click)="goToSection('nosotros')">
+      <mat-icon>groups</mat-icon>
+      <span>Nosotros</span>
+    </button>
+    <button mat-button type="button" (click)="goToSection('contacto')">
+      <mat-icon>mail</mat-icon>
+      <span>Contacto</span>
+    </button>
+  </nav>
+
+  <div class="auth-actions">
+    <button class="header-control" mat-icon-button type="button" (click)="theme.toggle()" [attr.aria-label]="theme.mode() === 'dark' ? 'Activar modo claro' : 'Activar modo oscuro'">
+      <mat-icon>{{ theme.mode() === 'dark' ? 'light_mode' : 'dark_mode' }}</mat-icon>
+    </button>
+    @if (auth.isAuthenticated()) {
+      <a class="ghost-action session-chip" mat-button [routerLink]="auth.landingFor()">{{ auth.session()?.nombre }} · {{ auth.role() }}</a>
+      <a class="ghost-action" mat-button routerLink="/panel">Mi panel</a>
+      <button class="solid-action" mat-button type="button" (click)="logout()">Salir</button>
+    } @else {
+      <a class="ghost-action" mat-button routerLink="/login">Iniciar sesión</a>
+      <button class="sound-toggle" mat-icon-button type="button" (click)="sounds.toggle()" [attr.aria-label]="sounds.enabled() ? 'Desactivar sonidos' : 'Activar sonidos'"><mat-icon>{{ sounds.enabled() ? 'volume_up' : 'volume_off' }}</mat-icon></button>
+    }
+  </div>
+  <button class="menu-toggle" mat-icon-button type="button" aria-label="Menu" (click)="toggleMenu()">
+    <mat-icon>menu</mat-icon>
+  </button>
+
+  @if (menuOpen) {
+    <nav class="drawer-menu" aria-label="Menu desplegable">
+      <div class="drawer-hero">
+        <img src="assets/imagenes/LogoBlanco.png" alt="" />
+        <div>
+          <span>Menú Glottia</span>
+          <strong>Explora tu comunidad</strong>
+        </div>
+      </div>
+      <span class="drawer-title">Navegación</span>
+      <a routerLink="/" (click)="toggleMenu()">
+        <mat-icon>home</mat-icon>
+        <span>Inicio</span>
+      </a>
+      <button type="button" (click)="goToSection('eventos')">
+        <mat-icon>event</mat-icon>
+        <span>Eventos</span>
+      </button>
+      <button type="button" (click)="goToSection('beneficios')">
+        <mat-icon>auto_awesome</mat-icon>
+        <span>Beneficios</span>
+      </button>
+      <button type="button" (click)="goToSection('nosotros')">
+        <mat-icon>groups</mat-icon>
+        <span>Nosotros</span>
+      </button>
+      <button type="button" (click)="goToSection('contacto')">
+        <mat-icon>mail</mat-icon>
+        <span>Contacto</span>
+      </button>
+
+      @if (auth.isAuthenticated()) {
+      <span class="drawer-title">Tu espacio · {{ auth.role() }}</span>
+      <a routerLink="/panel" (click)="toggleMenu()">
+        <mat-icon>dashboard</mat-icon>
+        <span>Mi panel</span>
+      </a>
+      @if (auth.role() === 'ADMINISTRADOR') {
+        <a routerLink="/usuarios" (click)="toggleMenu()">
+          <mat-icon>person</mat-icon>
+          <span>Usuarios</span>
+        </a>
+        <a routerLink="/roles" (click)="toggleMenu()">
+          <mat-icon>admin_panel_settings</mat-icon>
+          <span>Roles</span>
+        </a>
+        <a routerLink="/idiomas" (click)="toggleMenu()">
+          <mat-icon>translate</mat-icon>
+          <span>Idiomas</span>
+        </a>
+        <a routerLink="/intereses" (click)="toggleMenu()">
+          <mat-icon>interests</mat-icon>
+          <span>Intereses</span>
+        </a>
+      }
+      @if (auth.role() === 'ADMINISTRADOR' || auth.role() === 'ORGANIZADOR' || auth.role() === 'DOCENTE' || auth.role() === 'ESTUDIANTE') {
+        <a routerLink="/agenda" (click)="toggleMenu()">
+          <mat-icon>calendar_month</mat-icon>
+          <span>Agenda calendario</span>
+        </a>
+        <a routerLink="/eventos" (click)="toggleMenu()">
+          <mat-icon>event</mat-icon>
+          <span>Lista de eventos</span>
+        </a>
+      }
+      @if (auth.role() === 'ADMINISTRADOR' || auth.role() === 'ESTUDIANTE') {
+        <a routerLink="/reservas" (click)="toggleMenu()">
+          <mat-icon>bookmark</mat-icon>
+          <span>Reservas</span>
+        </a>
+      }
+      <button type="button" (click)="logout()"><mat-icon>logout</mat-icon> <span>Cerrar sesión</span></button>
+      } @else {
+        <a class="drawer-login" routerLink="/login" (click)="toggleMenu()"><mat-icon>login</mat-icon> <span>Iniciar sesión</span></a>
+      }
+      <button class="drawer-theme" type="button" (click)="theme.toggle()"><mat-icon>{{ theme.mode() === 'dark' ? 'light_mode' : 'dark_mode' }}</mat-icon> <span>{{ theme.mode() === 'dark' ? 'Modo claro' : 'Modo oscuro' }}</span></button>
+    </nav>
+  }
+</mat-toolbar>
+
+<div class="scroll-progress" aria-hidden="true">
+  <span [style.width.%]="scrollProgress"></span>
+</div>
+
+@if (feedback.message()) {
+  <div class="feedback" role="status">
+    <span>{{ feedback.message() }}</span>
+    <button mat-button type="button" (click)="feedback.clear()">Cerrar</button>
+  </div>
+}
+
+@if (isLandingPage) {
+  @if (!experienceReady) {
+    <div class="experience-gate" role="dialog" aria-modal="true" aria-label="Bienvenida a Glottia">
+      <div class="gate-grid" aria-hidden="true"></div>
+      <div class="gate-orb" aria-hidden="true">
+        <span></span><span></span><span></span>
+        <img src="assets/imagenes/LogoBlanco.png" alt="" />
+      </div>
+      <p class="gate-kicker">GLOTTIA · EXPERIENCIA LINGÜÍSTICA</p>
+      <h1>El idioma se vive mejor cuando se comparte</h1>
+      <p>Activa una entrada inmersiva con movimiento y sonido sutil.</p>
+      <button class="experience-enter" type="button" (click)="activateExperience(); sounds.click()">
+        <mat-icon>graphic_eq</mat-icon>
+        Activar experiencia
+      </button>
+      <small>Puedes silenciar los sonidos cuando quieras.</small>
+    </div>
+  }
+  <main class="landing">
+    <section class="hero" (mousemove)="moveHeroGlow($event)">
+      <div class="hero-video-wrap" aria-hidden="true">
+        <div id="yt-hero-video"></div>
+      </div>
+      <div class="hero-overlay"></div>
+      <div class="cursor-aurora" aria-hidden="true"></div>
+      <div class="hero-content">
+        <span class="hero-kicker">Encuentros lingüísticos y cultura</span>
+        <h1>Una forma <span>más natural</span> de vivir los idiomas</h1>
+        <p>Participa en sesiones por idioma, nivel y modalidad. Glottia reúne conversación guiada, intercambio cultural y comunidad en un solo espacio.</p>
+        <div class="hero-actions">
+          <a class="primary-cta" routerLink="/login" (click)="sounds.click()">Ingresar a Glottia</a>
+          <button class="secondary-cta" type="button" (click)="goToSection('eventos'); sounds.click()">Explorar agenda</button>
+        </div>
+        <div class="hero-stats" aria-label="Resumen de Glottia">
+          <div>
+            <strong>+{{ eventCount() }}</strong>
+            <span>eventos</span>
+          </div>
+          <div>
+            <strong>{{ languageCount() }}</strong>
+            <span>idiomas</span>
+          </div>
+          <div>
+            <strong>{{ levelCount() }}</strong>
+            <span>niveles</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="language-marquee" aria-label="Idiomas disponibles">
+      <div class="marquee-track">
+        <span>INGLÉS <i>&#10022;</i></span><span>ESPAÑOL <i>&#10022;</i></span><span>FRANCÉS <i>&#10022;</i></span><span>PORTUGUÉS <i>&#10022;</i></span><span>ITALIANO <i>&#10022;</i></span><span>ALEMÁN <i>&#10022;</i></span>
+        <span aria-hidden="true">INGLÉS <i>&#10022;</i></span><span aria-hidden="true">ESPAÑOL <i>&#10022;</i></span><span aria-hidden="true">FRANCÉS <i>&#10022;</i></span><span aria-hidden="true">PORTUGUÉS <i>&#10022;</i></span><span aria-hidden="true">ITALIANO <i>&#10022;</i></span><span aria-hidden="true">ALEMÁN <i>&#10022;</i></span>
+      </div>
+    </section>
+
+    <section class="community-pulse" aria-labelledby="pulse-title">
+      <div class="pulse-panel">
+        <header>
+          <div>
+            <span class="terminal-label">Agenda viva de Glottia</span>
+            <h2 id="pulse-title">Una agenda abierta al intercambio cultural</h2>
+            <p>Elige una sesión breve, comparte ideas y fortalece tu fluidez en un entorno cuidado.</p>
+          </div>
+        </header>
+        <div class="pulse-feed">
+          <article>
+            <div class="pulse-card-top">
+              <span class="pulse-tag">INGLÉS</span>
+              <time>AHORA</time>
+            </div>
+            <h3>Café virtual</h3>
+            <p>Una sesión ligera para conversar sobre temas cotidianos con guía del anfitrión.</p>
+            <a routerLink="/login">Ver sesión <mat-icon>arrow_outward</mat-icon></a>
+          </article>
+          <article>
+            <div class="pulse-card-top">
+              <span class="pulse-tag">FRANCÉS</span>
+              <time>18:30</time>
+            </div>
+            <h3>Pronunciación práctica</h3>
+            <p>Ejercicios simples para nivel inicial, con correcciones suaves y claras.</p>
+            <a routerLink="/login">Ver cupos <mat-icon>arrow_outward</mat-icon></a>
+          </article>
+          <article>
+            <div class="pulse-card-top">
+              <span class="pulse-tag">ESPAÑOL</span>
+              <time>20:00</time>
+            </div>
+            <h3>Historias culturales</h3>
+            <p>Conversaciones sobre viajes, identidad y vida diaria desde distintas perspectivas.</p>
+            <a routerLink="/login">Reservar <mat-icon>arrow_outward</mat-icon></a>
+          </article>
+        </div>
+        <a routerLink="/login" class="pulse-link">Explorar toda la agenda <mat-icon>east</mat-icon></a>
+      </div>
+    </section>
+
+    <section id="beneficios" class="section benefits-section">
+      <div class="section-heading">
+        <h2>Aprendizaje conversacional con una experiencia cuidada</h2>
+        <p>Glottia combina práctica guiada, comunidad y eventos de aforo reducido para acompañar tu progreso con claridad.</p>
+      </div>
+
+      <div class="bento-grid">
+        <article class="bento-card bento-wide">
+          <div class="bento-tag">NIVEL</div>
+          <h3>Avanza a tu propio ritmo</h3>
+          <p>Elige sesiones básicas, intermedias o avanzadas. Cada evento está clasificado para que encuentres el espacio exacto donde quieres crecer.</p>
+          <div class="bento-bg-orb"></div>
+        </article>
+        <article class="bento-card bento-accent">
+          <div class="bento-tag">COMUNIDAD</div>
+          <h3>Intercambio cultural</h3>
+          <p>Hablantes de distintos países, un mismo espacio.</p>
+        </article>
+        <article class="bento-card bento-dark">
+          <div class="bento-tag">GUÍA</div>
+          <h3>Acompañamiento cercano</h3>
+          <p>Aforo reducido, correcciones amables y espacio para preguntar.</p>
+        </article>
+        <article class="bento-card bento-wide-right">
+          <div class="bento-tag">AGENDA</div>
+          <h3>Reserva en segundos</h3>
+          <p>Explora la agenda, elige tu sesión y reserva tu cupo. Disponible en presencial, virtual y mixto.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="eventos" class="section events-section">
+      <div class="section-heading">
+        <h2>Eventos diseñados para ganar fluidez</h2>
+        <p>Encuentra una sesión que encaje con tu idioma, tu nivel y tu ritmo de aprendizaje.</p>
+      </div>
+
+      <div class="event-grid">
+        <article class="event-card">
+          <img src="assets/imagenes/Card1.png" alt="Café lingüístico" />
+          <div class="event-card-body">
+            <div class="event-tags">
+              <span>Español + Inglés</span>
+              <span>Intermedio</span>
+            </div>
+            <h3>Café Lingüístico: Spanglish en el día a día</h3>
+            <p>Fecha/Hora: 10 de mayo, 7:00 p.m.</p>
+            <p>Anfitrión: María Torres, lingüista bilingüe</p>
+            <p>Conversación interactiva sobre la fusión del inglés y español en la vida cotidiana.</p>
+            <a routerLink="/eventos">Reservar cupo</a>
+          </div>
+        </article>
+
+        <article class="event-card">
+          <img src="assets/imagenes/Card2.png" alt="Charla de acento" />
+          <div class="event-card-body">
+            <div class="event-tags">
+              <span>Inglés</span>
+              <span>Básico</span>
+            </div>
+            <h3>Charlas de acento: ¿cómo se habla inglés en Estados Unidos?</h3>
+            <p>Fecha/Hora: 12 de mayo, 6:00 p.m.</p>
+            <p>Anfitrión: Javier Huamán, profesor de fonética</p>
+            <p>Exploraremos acentos, expresiones y formas reales de conversación.</p>
+            <a routerLink="/eventos">Reservar cupo</a>
+          </div>
+        </article>
+
+        <article class="event-card">
+          <img src="assets/imagenes/Card3.png" alt="Mesa abierta de idiomas" />
+          <div class="event-card-body">
+            <div class="event-tags">
+              <span>Inglés</span>
+              <span>Online</span>
+            </div>
+            <h3>Mesa Abierta: Errores comunes al aprender inglés</h3>
+            <p>Fecha/Hora: 14 de mayo, 5:00 p.m.</p>
+            <p>Anfitrión: Ana Salinas, coach de inglés conversacional</p>
+            <p>Un espacio para reír, aprender y compartir experiencias.</p>
+            <a routerLink="/eventos">Reservar cupo</a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="nosotros" class="section about-section">
+      <h2>¿Quiénes somos?</h2>
+      <div class="about-layout">
+        <div class="about-copy">
+          <span>Comunidad Glottia</span>
+          <p>Glottia es una plataforma de encuentros conversacionales que conecta a personas interesadas en lenguas, cultura y aprendizaje colaborativo. Participa en charlas, debates y talleres desde cualquier parte del mundo.</p>
+          <a routerLink="/eventos">Saber más</a>
+        </div>
+        <img src="assets/imagenes/Info.png" alt="Personas compartiendo una conversación" />
+      </div>
+    </section>
+
+    <section class="section testimonials-section">
+      <h2>Testimonios</h2>
+      <div class="testimonial-grid">
+        <article class="testimonial-card">
+          <span class="t-avatar t-avatar--rose">JS</span>
+          <strong>Julie Smith</strong>
+          <span class="t-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+          <p>Me animé a hablar inglés sin sentir que todos me juzgaban.</p>
+        </article>
+        <article class="testimonial-card">
+          <span class="t-avatar t-avatar--teal">PA</span>
+          <strong>Paul Anderson</strong>
+          <span class="t-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+          <p>Los eventos se sienten cercanos, como conversar con amigos.</p>
+        </article>
+        <article class="testimonial-card">
+          <span class="t-avatar t-avatar--amber">PG</span>
+          <strong>Pablo Gerónimo</strong>
+          <span class="t-stars">&#9733;&#9733;&#9733;&#9733;&#9734;</span>
+          <p>Recomendado para sostener una práctica constante y mejorar con acompañamiento.</p>
+        </article>
+        <article class="testimonial-card">
+          <span class="t-avatar t-avatar--violet">MR</span>
+          <strong>Matías Requejo</strong>
+          <span class="t-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+          <p>Es increíblemente satisfactorio de usar.</p>
+        </article>
+        <article class="testimonial-card">
+          <span class="t-avatar t-avatar--mint">AP</span>
+          <strong>Ana Prado</strong>
+          <span class="t-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+          <p>Muy buena experiencia, dinámica y bien organizada.</p>
+        </article>
+        <article class="testimonial-card">
+          <span class="t-avatar t-avatar--blue">GV</span>
+          <strong>Gustave Vidal</strong>
+          <span class="t-stars">&#9733;&#9733;&#9733;&#9733;&#9734;</span>
+          <p>Cette application est très bonne.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="contacto" class="signup-section">
+      <div class="signup-copy">
+        <span>Tu agenda lingüística empieza aquí</span>
+        <h2>Accede a experiencias conversacionales diseñadas para avanzar</h2>
+        <p>Regístrate y descubre eventos donde puedas participar según tu idioma, nivel y modalidad.</p>
+      </div>
+      <form class="signup-form" [formGroup]="signupForm" (ngSubmit)="createUserFromHome()">
+        @if (signupError) {
+          <p class="signup-error">{{ signupError }}</p>
+        }
+
+        <label>
+          Nombre
+          <input type="text" formControlName="nombre" placeholder="Ingrese su nombre" />
+        </label>
+        <label>
+          Apellido
+          <input type="text" formControlName="apellido" placeholder="Ingrese su apellido" />
+        </label>
+        <label>
+          Correo
+          <input type="email" formControlName="correo" placeholder="Ingrese su correo" />
+        </label>
+        <label>
+          Contraseña
+          <input type="password" formControlName="contrasena" placeholder="Ingrese su contraseña" />
+        </label>
+        <label>
+          Ciudad
+          <input type="text" formControlName="ciudad" placeholder="Ingrese su ciudad" />
+        </label>
+        <label>
+          Modalidad
+          <select formControlName="modalidad">
+            <option value="">Seleccione una modalidad</option>
+            <option value="Presencial">Presencial</option>
+            <option value="Virtual">Virtual</option>
+            <option value="Mixta">Mixta</option>
+          </select>
+        </label>
+        <label class="full-field">
+          Biografía
+          <textarea rows="4" formControlName="biografia" placeholder="Cuéntanos un poco sobre ti"></textarea>
+        </label>
+        <label class="terms">
+          <input type="checkbox" formControlName="estado" />
+          Acepto los <a href="#" target="_blank" rel="noopener">términos y condiciones</a> de Glottia
+        </label>
+        <div class="form-actions">
+          <button type="button" (click)="signupForm.reset({ estado: true })">Cancelar</button>
+          <button type="submit" [disabled]="savingSignup">
+            {{ savingSignup ? 'Creando...' : 'Crear Cuenta' }}
+          </button>
+        </div>
+      </form>
+    </section>
+    <div id="yt-bg-player" style="position:absolute;width:1px;height:1px;opacity:0;pointer-events:none;overflow:hidden;" aria-hidden="true"></div>
+
+    @if (musicExpanded) {
+      <div class="music-float" role="region" aria-label="Reproductor de música">
+        <div class="music-card">
+          <div class="music-vinyl" [class.spinning]="isPlaying" aria-hidden="true">
+            <span>OR</span>
+          </div>
+          <div class="music-meta">
+            <span class="music-song">vampire</span>
+            <span class="music-artist">Olivia Rodrigo</span>
+            <div class="music-wave" aria-hidden="true">
+              <i></i><i></i><i></i><i></i><i></i>
+            </div>
+          </div>
+          <button class="music-play-btn" type="button" (click)="toggleMusic(); sounds.click()" [attr.aria-label]="isPlaying ? 'Pausar' : 'Reproducir'">
+            <mat-icon>{{ isPlaying ? 'pause' : 'play_arrow' }}</mat-icon>
+          </button>
+        </div>
+      </div>
+    }
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-glow" aria-hidden="true"></div>
+    <div class="footer-brand">
+      <img class="footer-logo" src="assets/imagenes/LogoBlanco.png" alt="Glottia" />
+      <div>
+        <strong>GLOTTIA</strong>
+        <p>Idiomas, cultura y encuentros conversacionales para aprender con propósito.</p>
+      </div>
+    </div>
+
+    <nav class="footer-links" aria-label="Enlaces secundarios">
+      <span>Explora</span>
+      <a href="#eventos">Eventos</a>
+      <a href="#beneficios">Beneficios</a>
+      <a href="#nosotros">Nosotros</a>
+      <a href="#contacto">Contacto</a>
+    </nav>
+
+    <div class="footer-contact">
+      <span>Comunidad</span>
+      <a href="#">Términos y condiciones</a>
+      <a href="#">Política de privacidad</a>
+      <div class="footer-socials" aria-label="Redes sociales">
+        <a href="#" aria-label="Instagram">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="20" height="20" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+        </a>
+        <a href="#" aria-label="Facebook">
+          <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+        </a>
+        <a href="#" aria-label="TikTok">
+          <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20" aria-hidden="true"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.95a8.16 8.16 0 0 0 4.78 1.52V7.03a4.85 4.85 0 0 1-1.01-.34z"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <div class="footer-device">
+      <img class="footer-mobile" src="assets/imagenes/Mobile.png" alt="Glottia mobile" />
+      <span>© 2025 Glottia</span>
+    </div>
+  </footer>
+} @else {
+  <main class="content">
+    <router-outlet></router-outlet>
+  </main>
+}
