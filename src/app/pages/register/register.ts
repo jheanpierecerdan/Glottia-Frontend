@@ -19,10 +19,10 @@ export class Register {
     apellido: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
     correo: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.email] }),
     contrasena: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.minLength(6)] }),
-    ciudad: new FormControl('', { nonNullable: true }),
-    modalidad: new FormControl('', { nonNullable: true }),
-    biografia: new FormControl('', { nonNullable: true }),
-    interesPrincipal: new FormControl('', { nonNullable: true }),
+    ciudad: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
+    modalidad: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
+    biografia: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
+    interesPrincipal: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
     estado: new FormControl(true, { nonNullable: true }),
   });
 
@@ -40,6 +40,7 @@ export class Register {
   submit(): void {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
+      this.error = 'Completa todos los campos obligatorios para registrarte.';
       return;
     }
 
@@ -65,5 +66,14 @@ export class Register {
         this.error = 'No pudimos completar el registro. Revisa tus datos e inténtalo nuevamente.';
       },
     });
+  }
+
+  fieldError(field: keyof Register['form']['controls']): string {
+    const control = this.form.controls[field];
+    if (!control.touched || control.valid) return '';
+    if (control.hasError('required')) return 'Este campo es obligatorio.';
+    if (control.hasError('email')) return 'Ingresa un correo valido.';
+    if (control.hasError('minlength')) return 'La contrasena debe tener minimo 6 caracteres.';
+    return '';
   }
 }

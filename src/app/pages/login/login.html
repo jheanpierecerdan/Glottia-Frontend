@@ -11,9 +11,13 @@
       <h2>{{ language.t('Iniciar sesion', 'Sign in') }}</h2>
       <p class="intro">{{ language.t('Te llevaremos automaticamente al espacio correspondiente a tu rol.', 'We will take you automatically to the space for your role.') }}</p>
       @if (error) { <p class="error" role="alert">{{ error }}</p> }
-      <label>{{ language.t('Correo electronico', 'Email') }}<input type="email" formControlName="correo" autocomplete="email" placeholder="tu@correo.com" /></label>
+      <label>{{ language.t('Correo electronico', 'Email') }}
+        <input type="email" formControlName="correo" autocomplete="email" placeholder="tu@correo.com" required />
+        @if (fieldError('correo')) { <span class="field-error">{{ fieldError('correo') }}</span> }
+      </label>
       <label>{{ language.t('Contrasena', 'Password') }}
-        <span class="password-field"><input [type]="showPassword ? 'text' : 'password'" formControlName="contrasena" autocomplete="current-password" [placeholder]="language.t('Tu contrasena', 'Your password')" /><button type="button" (click)="showPassword = !showPassword" [attr.aria-label]="showPassword ? language.t('Ocultar contrasena', 'Hide password') : language.t('Mostrar contrasena', 'Show password')"><mat-icon>{{ showPassword ? 'visibility_off' : 'visibility' }}</mat-icon></button></span>
+        <span class="password-field"><input [type]="showPassword ? 'text' : 'password'" formControlName="contrasena" autocomplete="current-password" [placeholder]="language.t('Tu contrasena', 'Your password')" required /><button type="button" (click)="showPassword = !showPassword" [attr.aria-label]="showPassword ? language.t('Ocultar contrasena', 'Hide password') : language.t('Mostrar contrasena', 'Show password')"><mat-icon>{{ showPassword ? 'visibility_off' : 'visibility' }}</mat-icon></button></span>
+        @if (fieldError('contrasena')) { <span class="field-error">{{ fieldError('contrasena') }}</span> }
       </label>
       <div class="social-login" aria-label="Accesos sociales simulados">
         <button type="button" (click)="simulateSocialLogin('Google')">Google</button>

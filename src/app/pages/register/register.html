@@ -21,51 +21,59 @@
       <div class="form-grid">
         <label>
           {{ language.t('Nombre', 'First name') }}
-          <input type="text" formControlName="nombre" autocomplete="given-name" placeholder="Tu nombre" />
+          <input type="text" formControlName="nombre" autocomplete="given-name" placeholder="Tu nombre" required />
+          @if (fieldError('nombre')) { <span class="field-error">{{ fieldError('nombre') }}</span> }
         </label>
         <label>
           {{ language.t('Apellido', 'Last name') }}
-          <input type="text" formControlName="apellido" autocomplete="family-name" placeholder="Tu apellido" />
+          <input type="text" formControlName="apellido" autocomplete="family-name" placeholder="Tu apellido" required />
+          @if (fieldError('apellido')) { <span class="field-error">{{ fieldError('apellido') }}</span> }
         </label>
         <label class="full-field">
           {{ language.t('Correo electronico', 'Email') }}
-          <input type="email" formControlName="correo" autocomplete="email" placeholder="tu@correo.com" />
+          <input type="email" formControlName="correo" autocomplete="email" placeholder="tu@correo.com" required />
+          @if (fieldError('correo')) { <span class="field-error">{{ fieldError('correo') }}</span> }
         </label>
         <label class="full-field">
           {{ language.t('Contrasena', 'Password') }}
           <span class="password-field">
-            <input [type]="showPassword ? 'text' : 'password'" formControlName="contrasena" autocomplete="new-password" placeholder="Minimo 6 caracteres" />
+            <input [type]="showPassword ? 'text' : 'password'" formControlName="contrasena" autocomplete="new-password" placeholder="Minimo 6 caracteres" required minlength="6" />
             <button type="button" (click)="showPassword = !showPassword" [attr.aria-label]="showPassword ? 'Ocultar contrasena' : 'Mostrar contrasena'">
               <mat-icon>{{ showPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
             </button>
           </span>
+          @if (fieldError('contrasena')) { <span class="field-error">{{ fieldError('contrasena') }}</span> }
         </label>
         <label>
           {{ language.t('Ciudad', 'City') }}
-          <input type="text" formControlName="ciudad" placeholder="Ciudad" />
+          <input type="text" formControlName="ciudad" placeholder="Ciudad" required />
+          @if (fieldError('ciudad')) { <span class="field-error">{{ fieldError('ciudad') }}</span> }
         </label>
         <label>
           {{ language.t('Modalidad', 'Format') }}
-          <select formControlName="modalidad">
+          <select formControlName="modalidad" required>
             <option value="">Selecciona</option>
             <option value="Presencial">Presencial</option>
             <option value="Virtual">Virtual</option>
             <option value="Mixta">Mixta</option>
           </select>
+          @if (fieldError('modalidad')) { <span class="field-error">{{ fieldError('modalidad') }}</span> }
         </label>
         <label class="full-field">
           {{ language.t('Presentacion breve', 'Short introduction') }}
-          <textarea rows="3" formControlName="biografia" placeholder="Cuentanos que idioma deseas fortalecer"></textarea>
+          <textarea rows="3" formControlName="biografia" placeholder="Cuentanos que idioma deseas fortalecer" required></textarea>
+          @if (fieldError('biografia')) { <span class="field-error">{{ fieldError('biografia') }}</span> }
         </label>
         <label class="full-field">
           {{ language.t('Perfil de interes', 'Interest profile') }}
-          <select formControlName="interesPrincipal">
+          <select formControlName="interesPrincipal" required>
             <option value="">Selecciona tu interes principal</option>
             <option value="Speaking">Speaking y fluidez</option>
             <option value="Cultura">Intercambio cultural</option>
             <option value="Examenes">Preparacion para examenes</option>
             <option value="Networking">Conocer nuevas personas</option>
           </select>
+          @if (fieldError('interesPrincipal')) { <span class="field-error">{{ fieldError('interesPrincipal') }}</span> }
         </label>
       </div>
 

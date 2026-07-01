@@ -20,7 +20,11 @@ export class Login {
     if (auth.isAuthenticated()) void router.navigateByUrl(auth.landingFor());
   }
   submit(): void {
-    if (this.form.invalid) { this.form.markAllAsTouched(); return; }
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      this.error = 'Completa el correo y la contrasena para iniciar sesion.';
+      return;
+    }
     this.loading = true; this.error = '';
     const { correo, contrasena } = this.form.getRawValue();
     this.auth.login(correo, contrasena).pipe(finalize(() => this.loading = false)).subscribe({
@@ -46,5 +50,13 @@ export class Login {
     this.auth.startGuest();
     this.sound.success();
     void this.router.navigateByUrl('/panel');
+  }
+
+  fieldError(field: 'correo' | 'contrasena'): string {
+    const control = this.form.controls[field];
+    if (!control.touched || control.valid) return '';
+    if (control.hasError('required')) return field === 'correo' ? 'Ingresa tu correo electronico.' : 'Ingresa tu contrasena.';
+    if (control.hasError('email')) return 'Ingresa un correo valido.';
+    return '';
   }
 }
