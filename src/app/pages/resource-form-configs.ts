@@ -55,8 +55,8 @@ export const eventFields: ResourceFormField[] = [
     { value: 'Inactivo', label: 'Inactivo' },
     { value: 'Cancelado', label: 'Cancelado' },
   ] },
-  { key: 'idIdioma', label: 'ID Idioma', type: 'number', min: 1 },
-  { key: 'idOrganizador', label: 'ID Organizador', type: 'number', min: 1 },
+  { key: 'idIdioma', label: 'Idioma', type: 'number', min: 1 },
+  { key: 'idOrganizador', label: 'Organizador', type: 'number', min: 1 },
   { key: 'descripcion', label: 'Descripcion', type: 'textarea', required: true },
 ];
 
