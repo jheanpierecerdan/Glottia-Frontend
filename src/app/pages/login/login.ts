@@ -6,6 +6,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { HttpErrorResponse } from '@angular/common/http';
 import { AuthService } from '../../services/auth.service';
 import { SoundService } from '../../services/sound.service';
+import { LanguageService } from '../../services/language.service';
 @Component({ selector: 'app-login', imports: [ReactiveFormsModule, RouterLink, MatIconModule], templateUrl: './login.html', styleUrl: './login.scss' })
 export class Login {
   readonly form = new FormGroup({
@@ -15,7 +16,7 @@ export class Login {
   loading = false;
   error = '';
   showPassword = false;
-  constructor(private readonly auth: AuthService, private readonly router: Router, private readonly sound: SoundService) {
+  constructor(private readonly auth: AuthService, private readonly router: Router, private readonly sound: SoundService, readonly language: LanguageService) {
     if (auth.isAuthenticated()) void router.navigateByUrl(auth.landingFor());
   }
   submit(): void {
@@ -30,5 +31,20 @@ export class Login {
           : 'Correo o contraseña incorrectos. Revisa tus datos e inténtalo otra vez.';
       },
     });
+  }
+
+  simulateSocialLogin(provider: string): void {
+    this.error = `Acceso con ${provider} simulado. En produccion se conectaria con OAuth.`;
+  }
+
+  recoverPassword(): void {
+    const correo = this.form.controls.correo.value || 'tu correo registrado';
+    this.error = `Solicitud de recuperacion simulada para ${correo}.`;
+  }
+
+  enterAsGuest(): void {
+    this.auth.startGuest();
+    this.sound.success();
+    void this.router.navigateByUrl('/panel');
   }
 }

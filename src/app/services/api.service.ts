@@ -2,10 +2,14 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 const LOCAL_API = 'http://localhost:8080/api';
-// API de Render desactivada por ahora. Para pruebas locales usamos siempre el backend local.
-// const RENDER_API = 'https://backend-glottia-main.onrender.com/api';
+const RENDER_API = 'https://backend-glottia-main.onrender.com/api';
 
-export const API_URL = LOCAL_API;
+const isBrowser = typeof window !== 'undefined';
+const isLocalHost = isBrowser && ['localhost', '127.0.0.1'].includes(window.location.hostname);
+
+export const IS_LOCAL_API = !isBrowser || isLocalHost;
+export const API_URL = IS_LOCAL_API ? LOCAL_API : RENDER_API;
+export const API_HEALTH_URL = `${API_URL.replace(/\/api$/, '')}/api/health`;
 
 export abstract class ApiService<T> {
   protected abstract readonly resource: string;

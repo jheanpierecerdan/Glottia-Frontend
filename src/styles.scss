@@ -304,6 +304,27 @@ textarea:focus-visible {
   transition: transform .2s ease, border-color .2s ease;
 }
 
+.mini-calendar-link {
+  display: inline-flex;
+  align-items: center;
+  gap: .3rem;
+  width: fit-content;
+  margin-top: .55rem;
+  padding: .4rem .6rem;
+  border-radius: 999px;
+  color: #fff;
+  background: linear-gradient(135deg, #e53d8c, #ff78b4);
+  font-size: .75rem;
+  font-weight: 850;
+  text-decoration: none;
+}
+
+.mini-calendar-link mat-icon {
+  width: 1rem;
+  height: 1rem;
+  font-size: 1rem;
+}
+
 .reservation-calendar {
   margin-bottom: 1rem;
   padding: clamp(1rem, 2vw, 1.4rem);

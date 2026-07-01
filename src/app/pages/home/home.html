@@ -1,4 +1,4 @@
-<mat-toolbar class="menu-toolbar">
+﻿<mat-toolbar class="menu-toolbar">
   <a class="logo-link" routerLink="/" aria-label="Ir al inicio">
     <img src="assets/imagenes/LogoBlanco.png" alt="Glottia" />
     <span class="brand">GLOTTIA</span>
@@ -9,36 +9,44 @@
   <nav class="links" aria-label="Menu principal">
     <a mat-button routerLink="/" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }">
       <mat-icon>home</mat-icon>
-      <span>Inicio</span>
+      <span>{{ t('navHome') }}</span>
     </a>
     <button mat-button type="button" (click)="goToSection('eventos')">
       <mat-icon>event</mat-icon>
-      <span>Eventos</span>
+      <span>{{ t('navEvents') }}</span>
     </button>
     <button mat-button type="button" (click)="goToSection('beneficios')">
       <mat-icon>auto_awesome</mat-icon>
-      <span>Beneficios</span>
+      <span>{{ t('navBenefits') }}</span>
     </button>
     <button mat-button type="button" (click)="goToSection('nosotros')">
       <mat-icon>groups</mat-icon>
-      <span>Nosotros</span>
+      <span>{{ t('navAbout') }}</span>
     </button>
     <button mat-button type="button" (click)="goToSection('contacto')">
       <mat-icon>mail</mat-icon>
-      <span>Contacto</span>
+      <span>{{ t('navContact') }}</span>
+    </button>
+    <button mat-button type="button" (click)="goToSection('ayuda')">
+      <mat-icon>help</mat-icon>
+      <span>{{ t('navHelp') }}</span>
     </button>
   </nav>
 
   <div class="auth-actions">
+    <div class="language-switch" aria-label="Cambiar idioma">
+      <button type="button" [class.active]="language.current() === 'es'" (click)="setLanguage('es')">ES</button>
+      <button type="button" [class.active]="language.current() === 'en'" (click)="setLanguage('en')">EN</button>
+    </div>
     <button class="header-control" mat-icon-button type="button" (click)="theme.toggle()" [attr.aria-label]="theme.mode() === 'dark' ? 'Activar modo claro' : 'Activar modo oscuro'">
       <mat-icon>{{ theme.mode() === 'dark' ? 'light_mode' : 'dark_mode' }}</mat-icon>
     </button>
     @if (auth.isAuthenticated()) {
-      <a class="ghost-action session-chip" mat-button [routerLink]="auth.landingFor()">{{ auth.session()?.nombre }} · {{ auth.role() }}</a>
-      <a class="ghost-action" mat-button routerLink="/panel">Mi panel</a>
-      <button class="solid-action" mat-button type="button" (click)="logout()">Salir</button>
+      <a class="ghost-action session-chip" mat-button [routerLink]="auth.landingFor()">{{ sessionName() }} · {{ roleName() }}</a>
+      <a class="ghost-action" mat-button routerLink="/panel">{{ t('myPanel') }}</a>
+      <button class="solid-action" mat-button type="button" (click)="logout()">{{ t('logout') }}</button>
     } @else {
-      <a class="ghost-action" mat-button routerLink="/login">Iniciar sesión</a>
+      <a class="ghost-action" mat-button routerLink="/login">{{ t('login') }}</a>
       <button class="sound-toggle" mat-icon-button type="button" (click)="sounds.toggle()" [attr.aria-label]="sounds.enabled() ? 'Desactivar sonidos' : 'Activar sonidos'"><mat-icon>{{ sounds.enabled() ? 'volume_up' : 'volume_off' }}</mat-icon></button>
     }
   </div>
@@ -51,77 +59,85 @@
       <div class="drawer-hero">
         <img src="assets/imagenes/LogoBlanco.png" alt="" />
         <div>
-          <span>Menú Glottia</span>
-          <strong>Explora tu comunidad</strong>
+          <span>{{ t('drawerTitle') }}</span>
+          <strong>{{ t('drawerSubtitle') }}</strong>
         </div>
       </div>
-      <span class="drawer-title">Navegación</span>
+      <span class="drawer-title">{{ t('drawerNav') }}</span>
       <a routerLink="/" (click)="toggleMenu()">
         <mat-icon>home</mat-icon>
-        <span>Inicio</span>
+        <span>{{ t('navHome') }}</span>
       </a>
       <button type="button" (click)="goToSection('eventos')">
         <mat-icon>event</mat-icon>
-        <span>Eventos</span>
+        <span>{{ t('navEvents') }}</span>
       </button>
       <button type="button" (click)="goToSection('beneficios')">
         <mat-icon>auto_awesome</mat-icon>
-        <span>Beneficios</span>
+        <span>{{ t('navBenefits') }}</span>
       </button>
       <button type="button" (click)="goToSection('nosotros')">
         <mat-icon>groups</mat-icon>
-        <span>Nosotros</span>
+        <span>{{ t('navAbout') }}</span>
       </button>
       <button type="button" (click)="goToSection('contacto')">
         <mat-icon>mail</mat-icon>
-        <span>Contacto</span>
+        <span>{{ t('navContact') }}</span>
+      </button>
+      <button type="button" (click)="goToSection('ayuda')">
+        <mat-icon>help</mat-icon>
+        <span>{{ t('navHelp') }}</span>
       </button>
 
       @if (auth.isAuthenticated()) {
-      <span class="drawer-title">Tu espacio · {{ auth.role() }}</span>
+      <span class="drawer-title">{{ t('yourSpace') }} · {{ roleName() }}</span>
       <a routerLink="/panel" (click)="toggleMenu()">
         <mat-icon>dashboard</mat-icon>
-        <span>Mi panel</span>
+        <span>{{ t('myPanel') }}</span>
       </a>
       @if (auth.role() === 'ADMINISTRADOR') {
         <a routerLink="/usuarios" (click)="toggleMenu()">
           <mat-icon>person</mat-icon>
-          <span>Usuarios</span>
+          <span>{{ t('users') }}</span>
         </a>
         <a routerLink="/roles" (click)="toggleMenu()">
           <mat-icon>admin_panel_settings</mat-icon>
-          <span>Roles</span>
+          <span>{{ t('roles') }}</span>
         </a>
         <a routerLink="/idiomas" (click)="toggleMenu()">
           <mat-icon>translate</mat-icon>
-          <span>Idiomas</span>
+          <span>{{ t('languages') }}</span>
         </a>
         <a routerLink="/intereses" (click)="toggleMenu()">
           <mat-icon>interests</mat-icon>
-          <span>Intereses</span>
+          <span>{{ t('interests') }}</span>
         </a>
       }
       @if (auth.role() === 'ADMINISTRADOR' || auth.role() === 'ORGANIZADOR' || auth.role() === 'DOCENTE' || auth.role() === 'ESTUDIANTE') {
         <a routerLink="/agenda" (click)="toggleMenu()">
           <mat-icon>calendar_month</mat-icon>
-          <span>Agenda calendario</span>
+          <span>{{ t('calendarAgenda') }}</span>
         </a>
         <a routerLink="/eventos" (click)="toggleMenu()">
           <mat-icon>event</mat-icon>
-          <span>Lista de eventos</span>
+          <span>{{ t('eventsList') }}</span>
         </a>
       }
       @if (auth.role() === 'ADMINISTRADOR' || auth.role() === 'ESTUDIANTE') {
         <a routerLink="/reservas" (click)="toggleMenu()">
           <mat-icon>bookmark</mat-icon>
-          <span>Reservas</span>
+          <span>{{ t('reservations') }}</span>
         </a>
       }
-      <button type="button" (click)="logout()"><mat-icon>logout</mat-icon> <span>Cerrar sesión</span></button>
+      <button type="button" (click)="logout()"><mat-icon>logout</mat-icon> <span>{{ t('closeSession') }}</span></button>
       } @else {
-        <a class="drawer-login" routerLink="/login" (click)="toggleMenu()"><mat-icon>login</mat-icon> <span>Iniciar sesión</span></a>
+        <a class="drawer-login" routerLink="/login" (click)="toggleMenu()"><mat-icon>login</mat-icon> <span>{{ t('login') }}</span></a>
       }
-      <button class="drawer-theme" type="button" (click)="theme.toggle()"><mat-icon>{{ theme.mode() === 'dark' ? 'light_mode' : 'dark_mode' }}</mat-icon> <span>{{ theme.mode() === 'dark' ? 'Modo claro' : 'Modo oscuro' }}</span></button>
+      <button class="drawer-theme" type="button" (click)="theme.toggle()"><mat-icon>{{ theme.mode() === 'dark' ? 'light_mode' : 'dark_mode' }}</mat-icon> <span>{{ theme.mode() === 'dark' ? t('lightMode') : t('darkMode') }}</span></button>
+      <div class="drawer-language" aria-label="Cambiar idioma">
+        <button type="button" [class.active]="language.current() === 'es'" (click)="setLanguage('es')">ES</button>
+        <button type="button" [class.active]="language.current() === 'en'" (click)="setLanguage('en')">EN</button>
+      </div>
     </nav>
   }
 </mat-toolbar>
@@ -131,9 +147,12 @@
 </div>
 
 @if (feedback.message()) {
-  <div class="feedback" role="status">
-    <span>{{ feedback.message() }}</span>
-    <button mat-button type="button" (click)="feedback.clear()">Cerrar</button>
+  <div class="feedback" role="status" aria-live="polite">
+    <span class="feedback-icon"><mat-icon>sms</mat-icon></span>
+    <p>{{ feedback.message() }}</p>
+    <button type="button" (click)="feedback.clear()" aria-label="Cerrar notificacion">
+      <mat-icon>close</mat-icon>
+    </button>
   </div>
 }
 
@@ -145,7 +164,7 @@
         <span></span><span></span><span></span>
         <img src="assets/imagenes/LogoBlanco.png" alt="" />
       </div>
-      <p class="gate-kicker">GLOTTIA · EXPERIENCIA LINGÜÍSTICA</p>
+      <p class="gate-kicker">GLOTTIA Â· EXPERIENCIA LINGÃœÃSTICA</p>
       <h1>El idioma se vive mejor cuando se comparte</h1>
       <p>Activa una entrada inmersiva con movimiento y sonido sutil.</p>
       <button class="experience-enter" type="button" (click)="activateExperience()">
@@ -161,25 +180,25 @@
       <div class="hero-overlay"></div>
       <div class="cursor-aurora" aria-hidden="true"></div>
       <div class="hero-content">
-        <span class="hero-kicker">Encuentros lingüísticos y cultura</span>
-        <h1>Una forma más natural de vivir los idiomas</h1>
-        <p>Participa en sesiones por idioma, nivel y modalidad. Glottia reúne conversación guiada, intercambio cultural y comunidad en un solo espacio.</p>
+        <span class="hero-kicker">{{ t('heroKicker') }}</span>
+        <h1>{{ t('heroTitle') }}</h1>
+        <p>{{ t('heroText') }}</p>
         <div class="hero-actions">
-          <a class="primary-cta" routerLink="/login">Ingresar a Glottia</a>
-          <button class="secondary-cta" type="button" (click)="goToSection('eventos')">Explorar agenda</button>
+          <a class="primary-cta" routerLink="/login">{{ t('heroPrimary') }}</a>
+          <button class="secondary-cta" type="button" (click)="goToSection('eventos')">{{ t('heroSecondary') }}</button>
         </div>
         <div class="hero-stats" aria-label="Resumen de Glottia">
           <div>
             <strong>+{{ eventCount() }}</strong>
-            <span>eventos</span>
+            <span>{{ t('statEvents') }}</span>
           </div>
           <div>
             <strong>{{ languageCount() }}</strong>
-            <span>idiomas</span>
+            <span>{{ t('statLanguages') }}</span>
           </div>
           <div>
             <strong>{{ levelCount() }}</strong>
-            <span>niveles</span>
+            <span>{{ t('statLevels') }}</span>
           </div>
         </div>
       </div>
@@ -187,8 +206,8 @@
 
     <section class="language-marquee" aria-label="Idiomas disponibles">
       <div class="marquee-track">
-        <span>INGLÉS <i>&#10022;</i></span><span>ESPAÑOL <i>&#10022;</i></span><span>FRANCÉS <i>&#10022;</i></span><span>PORTUGUÉS <i>&#10022;</i></span><span>ITALIANO <i>&#10022;</i></span><span>ALEMÁN <i>&#10022;</i></span>
-        <span aria-hidden="true">INGLÉS <i>&#10022;</i></span><span aria-hidden="true">ESPAÑOL <i>&#10022;</i></span><span aria-hidden="true">FRANCÉS <i>&#10022;</i></span><span aria-hidden="true">PORTUGUÉS <i>&#10022;</i></span><span aria-hidden="true">ITALIANO <i>&#10022;</i></span><span aria-hidden="true">ALEMÁN <i>&#10022;</i></span>
+        <span>INGLÃ‰S <i>&#10022;</i></span><span>ESPAÃ‘OL <i>&#10022;</i></span><span>FRANCÃ‰S <i>&#10022;</i></span><span>PORTUGUÃ‰S <i>&#10022;</i></span><span>ITALIANO <i>&#10022;</i></span><span>ALEMÃN <i>&#10022;</i></span>
+        <span aria-hidden="true">INGLÃ‰S <i>&#10022;</i></span><span aria-hidden="true">ESPAÃ‘OL <i>&#10022;</i></span><span aria-hidden="true">FRANCÃ‰S <i>&#10022;</i></span><span aria-hidden="true">PORTUGUÃ‰S <i>&#10022;</i></span><span aria-hidden="true">ITALIANO <i>&#10022;</i></span><span aria-hidden="true">ALEMÃN <i>&#10022;</i></span>
       </div>
     </section>
 
@@ -196,88 +215,88 @@
       <div class="pulse-panel">
         <header>
           <div>
-            <span class="terminal-label">Agenda viva de Glottia</span>
-            <h2 id="pulse-title">Una agenda abierta al intercambio cultural</h2>
-            <p>Elige una sesión breve, comparte ideas y fortalece tu fluidez en un entorno cuidado.</p>
+            <span class="terminal-label">{{ t('agendaLabel') }}</span>
+            <h2 id="pulse-title">{{ t('agendaTitle') }}</h2>
+            <p>{{ t('agendaText') }}</p>
           </div>
         </header>
         <div class="pulse-feed">
           <article>
             <div class="pulse-card-top">
-              <span class="pulse-tag">INGLÉS</span>
+              <span class="pulse-tag">INGLÃ‰S</span>
               <time>AHORA</time>
             </div>
-            <h3>Café virtual</h3>
-            <p>Una sesión ligera para conversar sobre temas cotidianos con guía del anfitrión.</p>
-            <a routerLink="/login">Ver sesión <mat-icon>arrow_outward</mat-icon></a>
+            <h3>{{ language.t('Cafe virtual', 'Virtual coffee') }}</h3>
+            <p>{{ language.t('Una sesion ligera para conversar sobre temas cotidianos con guia del anfitrion.', 'A light session to talk about everyday topics with host guidance.') }}</p>
+            <a routerLink="/login">{{ language.t('Ver sesion', 'View session') }} <mat-icon>arrow_outward</mat-icon></a>
           </article>
           <article>
             <div class="pulse-card-top">
-              <span class="pulse-tag">FRANCÉS</span>
+              <span class="pulse-tag">FRANCÃ‰S</span>
               <time>18:30</time>
             </div>
-            <h3>Pronunciación práctica</h3>
-            <p>Ejercicios simples para nivel inicial, con correcciones suaves y claras.</p>
-            <a routerLink="/login">Ver cupos <mat-icon>arrow_outward</mat-icon></a>
+            <h3>{{ language.t('Pronunciacion practica', 'Pronunciation practice') }}</h3>
+            <p>{{ language.t('Ejercicios simples para nivel inicial, con correcciones suaves y claras.', 'Simple beginner-level exercises with gentle and clear corrections.') }}</p>
+            <a routerLink="/login">{{ language.t('Ver cupos', 'View spots') }} <mat-icon>arrow_outward</mat-icon></a>
           </article>
           <article>
             <div class="pulse-card-top">
-              <span class="pulse-tag">ESPAÑOL</span>
+              <span class="pulse-tag">ESPAÃ‘OL</span>
               <time>20:00</time>
             </div>
-            <h3>Historias culturales</h3>
-            <p>Conversaciones sobre viajes, identidad y vida diaria desde distintas perspectivas.</p>
-            <a routerLink="/login">Reservar <mat-icon>arrow_outward</mat-icon></a>
+            <h3>{{ language.t('Historias culturales', 'Cultural stories') }}</h3>
+            <p>{{ language.t('Conversaciones sobre viajes, identidad y vida diaria desde distintas perspectivas.', 'Conversations about travel, identity and daily life from different perspectives.') }}</p>
+            <a routerLink="/login">{{ language.t('Reservar', 'Reserve') }} <mat-icon>arrow_outward</mat-icon></a>
           </article>
         </div>
-        <a routerLink="/login" class="pulse-link">Explorar toda la agenda <mat-icon>east</mat-icon></a>
+        <a routerLink="/login" class="pulse-link">{{ language.t('Explorar toda la agenda', 'Explore the full agenda') }} <mat-icon>east</mat-icon></a>
       </div>
     </section>
 
     <section id="beneficios" class="section benefits-section">
       <div class="section-heading">
-        <h2>Aprendizaje conversacional con una experiencia cuidada</h2>
-        <p>Glottia combina práctica guiada, comunidad y eventos de aforo reducido para acompañar tu progreso con claridad.</p>
+        <h2>{{ t('benefitsTitle') }}</h2>
+        <p>{{ t('benefitsText') }}</p>
       </div>
 
       <div class="benefit-grid">
         <article class="benefit-card">
           <span class="benefit-icon">Aa</span>
-          <h3>Avanza a tu nivel</h3>
-          <p>Elige sesiones básicas, intermedias o avanzadas según tu dominio actual.</p>
+          <h3>{{ language.t('Avanza a tu nivel', 'Grow at your level') }}</h3>
+          <p>{{ language.t('Elige sesiones basicas, intermedias o avanzadas segun tu dominio actual.', 'Choose beginner, intermediate or advanced sessions based on your current level.') }}</p>
         </article>
         <article class="benefit-card">
           <span class="benefit-icon">Hi</span>
-          <h3>Intercambio cultural</h3>
-          <p>Comparte perspectivas con estudiantes, anfitriones y hablantes de distintos lugares.</p>
+          <h3>{{ language.t('Intercambio cultural', 'Cultural exchange') }}</h3>
+          <p>{{ language.t('Comparte perspectivas con estudiantes, anfitriones y hablantes de distintos lugares.', 'Share perspectives with students, hosts and speakers from different places.') }}</p>
         </article>
         <article class="benefit-card">
           <span class="benefit-icon">&#10003;</span>
-          <h3>Acompañamiento cercano</h3>
-          <p>Eventos pensados para preguntar, recibir orientación y mejorar con confianza.</p>
+          <h3>{{ language.t('Acompanamiento cercano', 'Close guidance') }}</h3>
+          <p>{{ language.t('Eventos pensados para preguntar, recibir orientacion y mejorar con confianza.', 'Events designed to ask questions, receive guidance and improve with confidence.') }}</p>
         </article>
       </div>
     </section>
 
     <section id="eventos" class="section events-section">
       <div class="section-heading">
-        <h2>Eventos diseñados para ganar fluidez</h2>
-        <p>Encuentra una sesión que encaje con tu idioma, tu nivel y tu ritmo de aprendizaje.</p>
+        <h2>{{ t('eventsTitle') }}</h2>
+        <p>{{ t('eventsText') }}</p>
       </div>
 
       <div class="event-grid">
         <article class="event-card">
-          <img src="assets/imagenes/Card1.png" alt="Café lingüístico" />
+          <img src="assets/imagenes/Card1.png" alt="CafÃ© lingÃ¼Ã­stico" />
           <div class="event-card-body">
             <div class="event-tags">
-              <span>Español + Inglés</span>
+              <span>EspaÃ±ol + InglÃ©s</span>
               <span>Intermedio</span>
             </div>
-            <h3>Café Lingüístico: Spanglish en el día a día</h3>
-            <p>Fecha/Hora: 10 de mayo, 7:00 p.m.</p>
-            <p>Anfitrión: María Torres, lingüista bilingüe</p>
-            <p>Conversación interactiva sobre la fusión del inglés y español en la vida cotidiana.</p>
-            <a routerLink="/eventos">Reservar cupo</a>
+            <h3>{{ language.t('Cafe Linguistico: Spanglish en el dia a dia', 'Language Cafe: Spanglish in everyday life') }}</h3>
+            <p>{{ language.t('Fecha/Hora: 10 de mayo, 7:00 p.m.', 'Date/Time: May 10, 7:00 p.m.') }}</p>
+            <p>{{ language.t('Anfitrion: Maria Torres, linguista bilingue', 'Host: Maria Torres, bilingual linguist') }}</p>
+            <p>{{ language.t('Conversacion interactiva sobre la fusion del ingles y espanol en la vida cotidiana.', 'Interactive conversation about the fusion of English and Spanish in daily life.') }}</p>
+            <a routerLink="/eventos">{{ language.t('Reservar cupo', 'Reserve spot') }}</a>
           </div>
         </article>
 
@@ -285,14 +304,14 @@
           <img src="assets/imagenes/Card2.png" alt="Charla de acento" />
           <div class="event-card-body">
             <div class="event-tags">
-              <span>Inglés</span>
-              <span>Básico</span>
+              <span>InglÃ©s</span>
+              <span>BÃ¡sico</span>
             </div>
-            <h3>Charlas de acento: ¿cómo se habla inglés en Estados Unidos?</h3>
-            <p>Fecha/Hora: 12 de mayo, 6:00 p.m.</p>
-            <p>Anfitrión: Javier Huamán, profesor de fonética</p>
-            <p>Exploraremos acentos, expresiones y formas reales de conversación.</p>
-            <a routerLink="/eventos">Reservar cupo</a>
+            <h3>{{ language.t('Charlas de acento: como se habla ingles en Estados Unidos?', 'Accent talks: how is English spoken in the United States?') }}</h3>
+            <p>{{ language.t('Fecha/Hora: 12 de mayo, 6:00 p.m.', 'Date/Time: May 12, 6:00 p.m.') }}</p>
+            <p>{{ language.t('Anfitrion: Javier Huaman, profesor de fonetica', 'Host: Javier Huaman, phonetics teacher') }}</p>
+            <p>{{ language.t('Exploraremos acentos, expresiones y formas reales de conversacion.', 'We will explore accents, expressions and real conversation patterns.') }}</p>
+            <a routerLink="/eventos">{{ language.t('Reservar cupo', 'Reserve spot') }}</a>
           </div>
         </article>
 
@@ -300,78 +319,139 @@
           <img src="assets/imagenes/Card3.png" alt="Mesa abierta de idiomas" />
           <div class="event-card-body">
             <div class="event-tags">
-              <span>Inglés</span>
+              <span>InglÃ©s</span>
               <span>Online</span>
             </div>
-            <h3>Mesa Abierta: Errores comunes al aprender inglés</h3>
-            <p>Fecha/Hora: 14 de mayo, 5:00 p.m.</p>
-            <p>Anfitrión: Ana Salinas, coach de inglés conversacional</p>
-            <p>Un espacio para reír, aprender y compartir experiencias.</p>
-            <a routerLink="/eventos">Reservar cupo</a>
+            <h3>{{ language.t('Mesa Abierta: Errores comunes al aprender ingles', 'Open Table: Common mistakes when learning English') }}</h3>
+            <p>{{ language.t('Fecha/Hora: 14 de mayo, 5:00 p.m.', 'Date/Time: May 14, 5:00 p.m.') }}</p>
+            <p>{{ language.t('Anfitrion: Ana Salinas, coach de ingles conversacional', 'Host: Ana Salinas, conversational English coach') }}</p>
+            <p>{{ language.t('Un espacio para reir, aprender y compartir experiencias.', 'A space to laugh, learn and share experiences.') }}</p>
+            <a routerLink="/eventos">{{ language.t('Reservar cupo', 'Reserve spot') }}</a>
           </div>
         </article>
       </div>
     </section>
 
     <section id="nosotros" class="section about-section">
-      <h2>¿Quiénes somos?</h2>
+      <h2>{{ language.t('Quienes somos?', 'Who are we?') }}</h2>
       <div class="about-layout">
         <div class="about-copy">
-          <span>Comunidad Glottia</span>
-          <p>Glottia es una plataforma de encuentros conversacionales que conecta a personas interesadas en lenguas, cultura y aprendizaje colaborativo. Participa en charlas, debates y talleres desde cualquier parte del mundo.</p>
-          <a routerLink="/eventos">Saber más</a>
+          <span>{{ language.t('Comunidad', 'Community') }} Glottia</span>
+          <p>{{ language.t('Glottia es una plataforma de encuentros conversacionales que conecta a personas interesadas en lenguas, cultura y aprendizaje colaborativo. Participa en charlas, debates y talleres desde cualquier parte del mundo.', 'Glottia is a conversational meetup platform that connects people interested in languages, culture and collaborative learning. Join talks, debates and workshops from anywhere in the world.') }}</p>
+          <a routerLink="/eventos">{{ language.t('Saber mas', 'Learn more') }}</a>
         </div>
-        <img src="assets/imagenes/Info.png" alt="Personas compartiendo una conversación" />
+        <img src="assets/imagenes/Info.png" alt="Personas compartiendo una conversaciÃ³n" />
       </div>
     </section>
 
     <section class="section testimonials-section">
-      <h2>Testimonios</h2>
+      <h2>{{ language.t('Testimonios', 'Testimonials') }}</h2>
       <div class="testimonial-grid">
         <article class="testimonial-card">
           <img src="assets/imagenes/persons.webp" alt="Julie Smith" />
           <strong>Julie Smith</strong>
           <span>&#9733;&#9733;&#9733;&#9733;&#9733;</span>
-          <p>Me animé a hablar inglés sin sentir que todos me juzgaban.</p>
+          <p>{{ language.t('Me anime a hablar ingles sin sentir que todos me juzgaban.', 'It encouraged me to speak English without feeling judged.') }}</p>
         </article>
         <article class="testimonial-card">
           <img src="assets/imagenes/persons.webp" alt="Paul Anderson" />
           <strong>Paul Anderson</strong>
           <span>&#9733;&#9733;&#9733;&#9733;&#9733;</span>
-          <p>Los eventos se sienten cercanos, como conversar con amigos.</p>
+          <p>{{ language.t('Los eventos se sienten cercanos, como conversar con amigos.', 'The events feel close, like talking with friends.') }}</p>
         </article>
         <article class="testimonial-card">
-          <img src="assets/imagenes/persons.webp" alt="Pablo Gerónimo" />
-          <strong>Pablo Gerónimo</strong>
+          <img src="assets/imagenes/persons.webp" alt="Pablo GerÃ³nimo" />
+          <strong>Pablo GerÃ³nimo</strong>
           <span>&#9733;&#9733;&#9733;&#9733;&#9734;</span>
-          <p>Recomendado para sostener una práctica constante y mejorar con acompañamiento.</p>
+          <p>{{ language.t('Recomendado para sostener una practica constante y mejorar con acompanamiento.', 'Recommended for keeping steady practice and improving with guidance.') }}</p>
         </article>
         <article class="testimonial-card">
-          <img src="assets/imagenes/persons.webp" alt="Matías Requejo" />
-          <strong>Matías Requejo</strong>
+          <img src="assets/imagenes/persons.webp" alt="MatÃ­as Requejo" />
+          <strong>MatÃ­as Requejo</strong>
           <span>&#9733;&#9733;&#9733;&#9733;&#9733;</span>
-          <p>Es increíblemente satisfactorio de usar.</p>
+          <p>{{ language.t('Es increiblemente satisfactorio de usar.', 'It is incredibly satisfying to use.') }}</p>
         </article>
         <article class="testimonial-card">
           <img src="assets/imagenes/persons.webp" alt="Ana Prado" />
           <strong>Ana Prado</strong>
           <span>&#9733;&#9733;&#9733;&#9733;&#9733;</span>
-          <p>Muy buena experiencia, dinámica y bien organizada.</p>
+          <p>{{ language.t('Muy buena experiencia, dinamica y bien organizada.', 'A very good, dynamic and well-organized experience.') }}</p>
         </article>
         <article class="testimonial-card">
           <img src="assets/imagenes/persons.webp" alt="Gustave Vidal" />
           <strong>Gustave Vidal</strong>
           <span>&#9733;&#9733;&#9733;&#9733;&#9734;</span>
-          <p>Cette application est très bonne.</p>
+          <p>{{ language.t('Esta aplicacion es muy buena.', 'This app is very good.') }}</p>
         </article>
       </div>
     </section>
 
+    <section id="como-funciona" class="section support-section">
+      <div class="section-heading">
+        <h2>{{ t('howTitle') }}</h2>
+        <p>{{ t('howText') }}</p>
+      </div>
+      <div class="support-grid">
+        <article>
+          <mat-icon>person_add</mat-icon>
+          <h3>{{ language.t('1. Crea tu perfil', '1. Create your profile') }}</h3>
+          <p>{{ language.t('Registra tus datos, modalidad preferida e interes principal para orientar la experiencia.', 'Register your details, preferred format and main interest to guide the experience.') }}</p>
+        </article>
+        <article>
+          <mat-icon>travel_explore</mat-icon>
+          <h3>{{ language.t('2. Explora eventos', '2. Explore events') }}</h3>
+          <p>{{ language.t('Busca sesiones por fecha, idioma o modalidad desde la lista y el calendario.', 'Search sessions by date, language or format from the list and calendar.') }}</p>
+        </article>
+        <article>
+          <mat-icon>event_available</mat-icon>
+          <h3>{{ language.t('3. Reserva y participa', '3. Reserve and join') }}</h3>
+          <p>{{ language.t('Guarda tu cupo, agrega el encuentro a Google Calendar y prepara tu conversacion.', 'Save your spot, add the meetup to Google Calendar and prepare your conversation.') }}</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="ayuda" class="section support-section">
+      <div class="section-heading">
+        <h2>{{ t('helpTitle') }}</h2>
+        <p>{{ t('helpText') }}</p>
+      </div>
+      <div class="support-grid">
+        <article>
+          <mat-icon>help</mat-icon>
+          <h3>{{ language.t('Preguntas frecuentes', 'Frequently asked questions') }}</h3>
+          <p>{{ language.t('Encuentra respuestas sobre registro, reservas, cancelaciones y modalidades.', 'Find answers about registration, reservations, cancellations and formats.') }}</p>
+        </article>
+        <article>
+          <mat-icon>support_agent</mat-icon>
+          <h3>{{ language.t('Soporte al usuario', 'User support') }}</h3>
+          <p>{{ language.t('Escribe a ayuda@glottia.demo para recibir orientacion del equipo.', 'Write to ayuda@glottia.demo to receive team guidance.') }}</p>
+        </article>
+        <article>
+          <mat-icon>groups</mat-icon>
+          <h3>{{ language.t('Mis grupos', 'My groups') }}</h3>
+          <p>{{ language.t('Grupo Ingles B1, Club Conversacion Frances y Comunidad Multicultural aparecen como vista demo.', 'English B1 Group, French Conversation Club and Multicultural Community appear as demo groups.') }}</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section app-download-section">
+      <div>
+        <span>{{ t('appLabel') }}</span>
+        <h2>{{ t('appTitle') }}</h2>
+        <p>{{ t('appText') }}</p>
+        <div class="store-actions">
+          <a href="#app-store-demo">App Store</a>
+          <a href="#play-store-demo">Google Play</a>
+        </div>
+      </div>
+      <img src="assets/imagenes/Mobile.png" alt="Vista movil de Glottia" />
+    </section>
+
     <section id="contacto" class="signup-section">
       <div class="signup-copy">
-        <span>Tu agenda lingüística empieza aquí</span>
-        <h2>Accede a experiencias conversacionales diseñadas para avanzar</h2>
-        <p>Regístrate y descubre eventos donde puedas participar según tu idioma, nivel y modalidad.</p>
+        <span>{{ t('signupLabel') }}</span>
+        <h2>{{ t('signupTitle') }}</h2>
+        <p>{{ t('signupText') }}</p>
       </div>
       <form class="signup-form" [formGroup]="signupForm" (ngSubmit)="createUserFromHome()">
         @if (signupError) {
@@ -379,46 +459,46 @@
         }
 
         <label>
-          Nombre
+          {{ language.t('Nombre', 'First name') }}
           <input type="text" formControlName="nombre" placeholder="Ingrese su nombre" />
         </label>
         <label>
-          Apellido
+          {{ language.t('Apellido', 'Last name') }}
           <input type="text" formControlName="apellido" placeholder="Ingrese su apellido" />
         </label>
         <label>
-          Correo
+          {{ language.t('Correo', 'Email') }}
           <input type="email" formControlName="correo" placeholder="Ingrese su correo" />
         </label>
         <label>
-          Contraseña
-          <input type="password" formControlName="contrasena" placeholder="Ingrese su contraseña" />
+          {{ language.t('Contrasena', 'Password') }}
+          <input type="password" formControlName="contrasena" placeholder="Ingrese su contraseÃ±a" />
         </label>
         <label>
-          Ciudad
+          {{ language.t('Ciudad', 'City') }}
           <input type="text" formControlName="ciudad" placeholder="Ingrese su ciudad" />
         </label>
         <label>
-          Modalidad
+          {{ language.t('Modalidad', 'Format') }}
           <select formControlName="modalidad">
-            <option value="">Seleccione una modalidad</option>
-            <option value="Presencial">Presencial</option>
-            <option value="Virtual">Virtual</option>
-            <option value="Mixta">Mixta</option>
+            <option value="">{{ language.t('Seleccione una modalidad', 'Select a format') }}</option>
+            <option value="Presencial">{{ language.t('Presencial', 'In-person') }}</option>
+            <option value="Virtual">{{ language.t('Virtual', 'Virtual') }}</option>
+            <option value="Mixta">{{ language.t('Mixta', 'Mixed') }}</option>
           </select>
         </label>
         <label class="full-field">
-          Biografía
-          <textarea rows="4" formControlName="biografia" placeholder="Cuéntanos un poco sobre ti"></textarea>
+          {{ language.t('Biografia', 'Biography') }}
+          <textarea rows="4" formControlName="biografia" placeholder="CuÃ©ntanos un poco sobre ti"></textarea>
         </label>
         <label class="terms">
           <input type="checkbox" formControlName="estado" />
-          Activo
+          {{ language.t('Activo', 'Active') }}
         </label>
         <div class="form-actions">
-          <button type="button" (click)="signupForm.reset({ estado: true })">Cancelar</button>
+          <button type="button" (click)="signupForm.reset({ estado: true })">{{ language.t('Cancelar', 'Cancel') }}</button>
           <button type="submit" [disabled]="savingSignup">
-            {{ savingSignup ? 'Creando...' : 'Crear Cuenta' }}
+            {{ savingSignup ? language.t('Creando...', 'Creating...') : language.t('Crear Cuenta', 'Create Account') }}
           </button>
         </div>
       </form>
@@ -431,22 +511,22 @@
       <img class="footer-logo" src="assets/imagenes/LogoBlanco.png" alt="Glottia" />
       <div>
         <strong>GLOTTIA</strong>
-        <p>Idiomas, cultura y encuentros conversacionales para aprender con propósito.</p>
+        <p>{{ language.t('Idiomas, cultura y encuentros conversacionales para aprender con proposito.', 'Languages, culture and conversational meetups for purposeful learning.') }}</p>
       </div>
     </div>
 
     <nav class="footer-links" aria-label="Enlaces secundarios">
-      <span>Explora</span>
-      <a href="#eventos">Eventos</a>
-      <a href="#beneficios">Beneficios</a>
-      <a href="#nosotros">Nosotros</a>
-      <a href="#contacto">Contacto</a>
+      <span>{{ language.t('Explora', 'Explore') }}</span>
+      <a href="#eventos">{{ language.t('Eventos', 'Events') }}</a>
+      <a href="#beneficios">{{ language.t('Beneficios', 'Benefits') }}</a>
+      <a href="#nosotros">{{ language.t('Nosotros', 'About') }}</a>
+      <a href="#contacto">{{ language.t('Contacto', 'Contact') }}</a>
     </nav>
 
     <div class="footer-contact">
-      <span>Comunidad</span>
-      <a href="#">Términos y condiciones</a>
-      <a href="#">Política de privacidad</a>
+      <span>{{ language.t('Comunidad', 'Community') }}</span>
+      <a href="#">{{ language.t('Terminos y condiciones', 'Terms and conditions') }}</a>
+      <a href="#">{{ language.t('Politica de privacidad', 'Privacy policy') }}</a>
       <div class="footer-socials" aria-label="Redes sociales">
         <a href="#" aria-label="Instagram">IG</a>
         <a href="#" aria-label="Facebook">FB</a>
@@ -456,7 +536,7 @@
 
     <div class="footer-device">
       <img class="footer-mobile" src="assets/imagenes/Mobile.png" alt="Glottia mobile" />
-      <span>© 2025 Glottia</span>
+      <span>{{ language.t('© 2025 Glottia', '© 2025 Glottia') }}</span>
     </div>
   </footer>
 } @else {
@@ -464,3 +544,6 @@
     <router-outlet></router-outlet>
   </main>
 }
+
+
+

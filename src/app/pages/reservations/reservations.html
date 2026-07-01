@@ -50,6 +50,10 @@
           <strong>Reserva #{{ reservation.idReserva }}</strong>
           <p>{{ userName(reservation.idUsuario) }} · {{ eventName(reservation.idEvento) }}</p>
           <small>{{ reservation.estadoReserva }} · {{ reservation.fechaReserva }}</small>
+          <a class="mini-calendar-link" [href]="googleCalendarUrl(reservation.idEvento)" target="_blank" rel="noopener noreferrer">
+            <mat-icon>calendar_month</mat-icon>
+            Google Calendar
+          </a>
         </div>
       </article>
     } @empty {

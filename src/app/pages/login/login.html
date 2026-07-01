@@ -1,23 +1,31 @@
 <section class="login-shell">
-  <a routerLink="/" class="back-link"><mat-icon>arrow_back</mat-icon> Volver al inicio</a>
+  <a routerLink="/" class="back-link"><mat-icon>arrow_back</mat-icon> {{ language.t('Volver al inicio', 'Back home') }}</a>
   <div class="login-card">
     <div class="login-art" aria-hidden="true">
       <img src="assets/imagenes/LogoBlanco.png" alt="" />
-      <h1>Continúa tu experiencia lingüística</h1>
-      <p>Accede a tu agenda, reservas y encuentros disponibles.</p>
+      <h1>{{ language.t('Continua tu experiencia linguistica', 'Continue your language experience') }}</h1>
+      <p>{{ language.t('Accede a tu agenda, reservas y encuentros disponibles.', 'Access your agenda, reservations and available meetups.') }}</p>
     </div>
     <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
-      <span class="eyebrow">Bienvenido de vuelta</span>
-      <h2>Iniciar sesión</h2>
-      <p class="intro">Te llevaremos automáticamente al espacio correspondiente a tu rol.</p>
+      <span class="eyebrow">{{ language.t('Bienvenido de vuelta', 'Welcome back') }}</span>
+      <h2>{{ language.t('Iniciar sesion', 'Sign in') }}</h2>
+      <p class="intro">{{ language.t('Te llevaremos automaticamente al espacio correspondiente a tu rol.', 'We will take you automatically to the space for your role.') }}</p>
       @if (error) { <p class="error" role="alert">{{ error }}</p> }
-      <label>Correo electrónico<input type="email" formControlName="correo" autocomplete="email" placeholder="tu@correo.com" /></label>
-      <label>Contraseña
-        <span class="password-field"><input [type]="showPassword ? 'text' : 'password'" formControlName="contrasena" autocomplete="current-password" placeholder="Tu contraseña" /><button type="button" (click)="showPassword = !showPassword" [attr.aria-label]="showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'"><mat-icon>{{ showPassword ? 'visibility_off' : 'visibility' }}</mat-icon></button></span>
+      <label>{{ language.t('Correo electronico', 'Email') }}<input type="email" formControlName="correo" autocomplete="email" placeholder="tu@correo.com" /></label>
+      <label>{{ language.t('Contrasena', 'Password') }}
+        <span class="password-field"><input [type]="showPassword ? 'text' : 'password'" formControlName="contrasena" autocomplete="current-password" [placeholder]="language.t('Tu contrasena', 'Your password')" /><button type="button" (click)="showPassword = !showPassword" [attr.aria-label]="showPassword ? language.t('Ocultar contrasena', 'Hide password') : language.t('Mostrar contrasena', 'Show password')"><mat-icon>{{ showPassword ? 'visibility_off' : 'visibility' }}</mat-icon></button></span>
       </label>
-      <button class="submit" type="submit" [disabled]="loading">{{ loading ? 'Ingresando…' : 'Entrar a Glottia' }} <mat-icon>arrow_forward</mat-icon></button>
-      <p class="hint">Usa el correo con el que te registraste en Glottia.</p>
-      <p class="register-prompt">¿Aún no tienes una cuenta? <a routerLink="/register">Regístrate aquí</a></p>
+      <div class="social-login" aria-label="Accesos sociales simulados">
+        <button type="button" (click)="simulateSocialLogin('Google')">Google</button>
+        <button type="button" (click)="simulateSocialLogin('Facebook')">Facebook</button>
+      </div>
+      <button class="submit" type="submit" [disabled]="loading">{{ loading ? language.t('Ingresando...', 'Signing in...') : language.t('Entrar a Glottia', 'Enter Glottia') }} <mat-icon>arrow_forward</mat-icon></button>
+      <div class="login-secondary">
+        <button type="button" (click)="recoverPassword()">{{ language.t('Recuperar contrasena', 'Recover password') }}</button>
+        <button type="button" (click)="enterAsGuest()">{{ language.t('Entrar como invitado', 'Enter as guest') }}</button>
+      </div>
+      <p class="hint">{{ language.t('Usa el correo con el que te registraste en Glottia.', 'Use the email you registered with in Glottia.') }}</p>
+      <p class="register-prompt">{{ language.t('Aun no tienes una cuenta?', 'Do not have an account yet?') }} <a routerLink="/register">{{ language.t('Registrate aqui', 'Register here') }}</a></p>
     </form>
   </div>
 </section>

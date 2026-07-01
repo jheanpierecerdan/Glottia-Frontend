@@ -12,6 +12,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { ApiService } from '../../services/api.service';
 import { FeedbackService } from '../../services/feedback';
+import { openGoogleCalendarEvent } from '../../services/google-calendar';
+import { LanguageService } from '../../services/language.service';
 
 export interface ResourceFormOption {
   value: string | number | boolean;
@@ -71,6 +73,7 @@ export class ResourceForm implements OnInit {
     private readonly router: Router,
     private readonly feedback: FeedbackService,
     private readonly changeDetector: ChangeDetectorRef,
+    readonly language: LanguageService,
   ) {}
 
   ngOnInit(): void {
@@ -119,6 +122,9 @@ export class ResourceForm implements OnInit {
       this.changeDetector.detectChanges();
     })).subscribe({
       next: () => {
+        if (this.shouldOpenGoogleCalendar) {
+          openGoogleCalendarEvent(payload as ResourceFormValue);
+        }
         this.feedback.show(this.successText);
         this.router.navigate([this.basePath()]);
       },
@@ -178,6 +184,10 @@ export class ResourceForm implements OnInit {
   private get successText(): string {
     if (this.successMessage()) return this.successMessage();
     return this.mode() === 'insert' ? 'Guardado exitosamente.' : 'Modificado exitosamente.';
+  }
+
+  private get shouldOpenGoogleCalendar(): boolean {
+    return this.basePath() === '/eventos' && !this.isDelete;
   }
 
   private buildForm(): void {

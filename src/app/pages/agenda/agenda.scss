@@ -311,6 +311,28 @@
   font-weight: 800;
 }
 
+.calendar-link {
+  display: inline-flex;
+  align-items: center;
+  gap: .35rem;
+  width: fit-content;
+  margin-top: .7rem;
+  padding: .48rem .65rem;
+  border-radius: 999px;
+  color: white;
+  background: linear-gradient(135deg, #e53d8c, #ff78b4);
+  font-size: .78rem;
+  font-weight: 850;
+  text-decoration: none;
+  box-shadow: 0 12px 22px rgba(229, 61, 140, .18);
+}
+
+.calendar-link mat-icon {
+  width: 1rem;
+  height: 1rem;
+  font-size: 1rem;
+}
+
 .detail-event small mat-icon {
   width: 17px;
   height: 17px;

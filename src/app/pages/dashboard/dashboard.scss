@@ -635,3 +635,17 @@
     transition: none !important;
   }
 }
+
+.group-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .7rem;
+}
+
+.group-list span {
+  padding: .7rem .9rem;
+  border-radius: 999px;
+  background: rgba(96, 229, 205, .18);
+  color: #0f8875;
+  font-weight: 850;
+}

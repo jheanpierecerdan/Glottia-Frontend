@@ -8,6 +8,7 @@ import { ResourcePage } from '../resource-page';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { buildGoogleCalendarUrl } from '../../services/google-calendar';
 
 interface ReservationDay {
   date: Date;
@@ -67,6 +68,10 @@ export class Reservations extends ResourcePage implements OnInit {
   }
   eventName(idEvento: number): string {
     return this.events.find((item) => item.idEvento === idEvento)?.titulo ?? `Evento ${idEvento}`;
+  }
+  googleCalendarUrl(idEvento: number): string {
+    const event = this.events.find((item) => item.idEvento === idEvento);
+    return buildGoogleCalendarUrl(event ?? { titulo: this.eventName(idEvento), fechaHora: this.eventDate(idEvento)?.toISOString() });
   }
   eventDate(idEvento: number): Date | null {
     const raw = this.events.find((item) => item.idEvento === idEvento)?.fechaHora;

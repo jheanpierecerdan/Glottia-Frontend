@@ -21,6 +21,11 @@ export class AuthService {
       tap((session) => { localStorage.setItem(this.storageKey, JSON.stringify(session)); this.sessionState.set(session); }),
     );
   }
+  startGuest(): void {
+    const session: Session = { token: 'guest-demo-token', correo: 'invitado@glottia.demo', nombre: 'Invitado', rol: 'ESTUDIANTE' };
+    localStorage.setItem(this.storageKey, JSON.stringify(session));
+    this.sessionState.set(session);
+  }
   logout(): void { localStorage.removeItem(this.storageKey); this.sessionState.set(null); }
   landingFor(role: UserRole | null = this.role()): string {
     return ({ ADMINISTRADOR: '/panel', ORGANIZADOR: '/panel', DOCENTE: '/panel', ESTUDIANTE: '/panel' } as const)[role ?? 'ESTUDIANTE'];

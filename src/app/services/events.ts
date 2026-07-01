@@ -12,6 +12,8 @@ export interface Event {
   cupoMaximo: number;
   ubicacion?: string;
   enlaceVirtual?: string;
+  imagenReferencial?: string;
+  nivelSugerido?: string;
   estado: string;
   idIdioma?: number;
   idOrganizador?: number;

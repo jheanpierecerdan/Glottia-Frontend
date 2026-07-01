@@ -5,6 +5,7 @@ import { finalize } from 'rxjs';
 import { MatIconModule } from '@angular/material/icon';
 import { Users } from '../../services/users';
 import { SoundService } from '../../services/sound.service';
+import { LanguageService } from '../../services/language.service';
 
 @Component({
   selector: 'app-register',
@@ -21,6 +22,7 @@ export class Register {
     ciudad: new FormControl('', { nonNullable: true }),
     modalidad: new FormControl('', { nonNullable: true }),
     biografia: new FormControl('', { nonNullable: true }),
+    interesPrincipal: new FormControl('', { nonNullable: true }),
     estado: new FormControl(true, { nonNullable: true }),
   });
 
@@ -32,6 +34,7 @@ export class Register {
     private readonly users: Users,
     private readonly router: Router,
     private readonly sound: SoundService,
+    readonly language: LanguageService,
   ) {}
 
   submit(): void {

@@ -3,6 +3,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
+import { LanguageService } from '../../services/language.service';
 
 export interface ResourceColumn {
   key: string;
@@ -13,8 +14,10 @@ export type ResourceRow = Record<string, unknown>;
 
 export interface ResourceAction {
   label: string;
-  link: (row: ResourceRow) => unknown[];
+  icon?: string;
+  link?: (row: ResourceRow) => unknown[];
   queryParams?: (row: ResourceRow) => Record<string, unknown>;
+  externalUrl?: (row: ResourceRow) => string;
 }
 
 @Component({
@@ -39,6 +42,8 @@ export class ResourceList {
   readonly remove = output<number>();
   searchTerm = '';
   private readonly expanded = new Set<unknown>();
+
+  constructor(readonly language: LanguageService) {}
 
   get filteredRows(): ResourceRow[] {
     const term = this.searchTerm.trim().toLowerCase();
@@ -73,6 +78,10 @@ export class ResourceList {
 
   getActionQueryParams(action: ResourceAction, row: ResourceRow): Record<string, unknown> | undefined {
     return action.queryParams?.(row);
+  }
+
+  getActionUrl(action: ResourceAction, row: ResourceRow): string | undefined {
+    return action.externalUrl?.(row);
   }
 
   get pageIcon(): string {
@@ -131,6 +140,9 @@ export class ResourceList {
   displayValue(row: ResourceRow, key: string): string {
     const value = row[key];
 
+    if ((key === 'imagenReferencial' || key === 'nivelSugerido') && (value === null || value === undefined || value === '')) {
+      return key === 'imagenReferencial' ? 'Imagen referencial demo' : 'Todos los niveles';
+    }
     if (value === null || value === undefined || value === '') return 'Sin dato';
     if (typeof value === 'boolean') return value ? 'Sí' : 'No';
     if (typeof value === 'object') return this.displayObject(value as ResourceRow);

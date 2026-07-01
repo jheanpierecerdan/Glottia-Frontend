@@ -43,6 +43,13 @@ export const eventFields: ResourceFormField[] = [
   { key: 'cupoMaximo', label: 'Cupo maximo', type: 'number', required: true, min: 1 },
   { key: 'ubicacion', label: 'Ubicacion' },
   { key: 'enlaceVirtual', label: 'Enlace virtual' },
+  { key: 'imagenReferencial', label: 'Imagen referencial', required: true },
+  { key: 'nivelSugerido', label: 'Nivel sugerido', type: 'select', required: true, options: [
+    { value: 'Basico', label: 'Basico' },
+    { value: 'Intermedio', label: 'Intermedio' },
+    { value: 'Avanzado', label: 'Avanzado' },
+    { value: 'Todos', label: 'Todos' },
+  ] },
   { key: 'estado', label: 'Estado', type: 'select', required: true, options: [
     { value: 'Activo', label: 'Activo' },
     { value: 'Inactivo', label: 'Inactivo' },

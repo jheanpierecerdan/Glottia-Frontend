@@ -7,14 +7,14 @@
 
       <div class="hero-copy">
         <span>{{ modeLabel }}</span>
-        <h1>{{ title() }}</h1>
-        <p>{{ description() }}</p>
+        <h1>{{ language.label(title()) }}</h1>
+        <p>{{ language.label(description()) }}</p>
       </div>
     </div>
 
     <a mat-button class="back-action" [routerLink]="[basePath()]">
       <mat-icon>arrow_back</mat-icon>
-      Volver
+      {{ language.t('Volver', 'Back') }}
     </a>
   </div>
 
@@ -23,8 +23,8 @@
       <mat-card-content>
         <mat-icon aria-hidden="true">hourglass_top</mat-icon>
         <div>
-          <strong>Cargando registro...</strong>
-          <p>Estamos preparando la información para mostrarla en el formulario.</p>
+          <strong>{{ language.t('Cargando registro...', 'Loading record...') }}</strong>
+          <p>{{ language.t('Estamos preparando la informacion para mostrarla en el formulario.', 'We are preparing the information for the form.') }}</p>
         </div>
       </mat-card-content>
     </mat-card>
@@ -43,7 +43,7 @@
         @if (isDelete) {
           <p class="delete-text">
             <mat-icon aria-hidden="true">warning</mat-icon>
-            Confirma la eliminación del registro seleccionado.
+            {{ language.t('Confirma la eliminacion del registro seleccionado.', 'Confirm deletion of the selected record.') }}
           </p>
           @if (record) {
             <pre>{{ record | json }}</pre>
@@ -54,27 +54,27 @@
               @if (field.type === 'checkbox') {
                 <mat-checkbox class="field-checkbox" [formControlName]="field.key">
                   <mat-icon aria-hidden="true">{{ fieldIcon(field) }}</mat-icon>
-                  {{ field.label }}
+                  {{ language.label(field.label) }}
                 </mat-checkbox>
               } @else if (field.type === 'select') {
                 <mat-form-field appearance="outline">
-                  <mat-label>{{ field.label }}</mat-label>
+                  <mat-label>{{ language.label(field.label) }}</mat-label>
                   <mat-icon matPrefix aria-hidden="true">{{ fieldIcon(field) }}</mat-icon>
                   <mat-select [formControlName]="field.key">
                     @for (option of field.options ?? []; track option.value) {
-                      <mat-option [value]="option.value">{{ option.label }}</mat-option>
+                      <mat-option [value]="option.value">{{ language.label(option.label) }}</mat-option>
                     }
                   </mat-select>
                   @if (field.required) {
-                    <mat-hint>Obligatorio</mat-hint>
+                    <mat-hint>{{ language.t('Obligatorio', 'Required') }}</mat-hint>
                   }
                   @if (hasError(field)) {
-                    <mat-error>Campo inválido</mat-error>
+                    <mat-error>{{ language.t('Campo invalido', 'Invalid field') }}</mat-error>
                   }
                 </mat-form-field>
               } @else {
                 <mat-form-field appearance="outline" [class.full]="field.type === 'textarea'">
-                  <mat-label>{{ field.label }}</mat-label>
+                  <mat-label>{{ language.label(field.label) }}</mat-label>
                   <mat-icon matPrefix aria-hidden="true">{{ fieldIcon(field) }}</mat-icon>
                   @if (field.type === 'textarea') {
                     <textarea matInput rows="4" [formControlName]="field.key"></textarea>
@@ -82,10 +82,10 @@
                     <input matInput [type]="field.type ?? 'text'" [formControlName]="field.key" />
                   }
                   @if (field.required) {
-                    <mat-hint>Obligatorio</mat-hint>
+                    <mat-hint>{{ language.t('Obligatorio', 'Required') }}</mat-hint>
                   }
                   @if (hasError(field)) {
-                    <mat-error>Campo inválido</mat-error>
+                    <mat-error>{{ language.t('Campo invalido', 'Invalid field') }}</mat-error>
                   }
                 </mat-form-field>
               }
@@ -97,7 +97,7 @@
       <mat-card-actions align="end">
         <a mat-button class="cancel-action" [routerLink]="[basePath()]">
           <mat-icon>close</mat-icon>
-          Cancelar
+          {{ language.t('Cancelar', 'Cancel') }}
         </a>
         <button mat-flat-button color="primary" type="button" [disabled]="saving || (mode() === 'update' && !form.dirty)" (click)="save()">
           <mat-icon>{{ actionIcon }}</mat-icon>

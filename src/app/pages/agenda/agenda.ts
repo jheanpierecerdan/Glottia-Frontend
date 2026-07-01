@@ -5,6 +5,8 @@ import { RouterLink } from '@angular/router';
 import { finalize } from 'rxjs';
 import { MatIconModule } from '@angular/material/icon';
 import { Events, Event } from '../../services/events';
+import { buildGoogleCalendarUrl } from '../../services/google-calendar';
+import { LanguageService } from '../../services/language.service';
 
 registerLocaleData(localeEsPe);
 
@@ -33,7 +35,7 @@ export class Agenda implements OnInit {
   readonly weekDays = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'];
   readonly monthNames = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
 
-  constructor(private readonly eventsService: Events) {}
+  constructor(private readonly eventsService: Events, readonly language: LanguageService) {}
 
   ngOnInit(): void {
     this.loadEvents();
@@ -77,6 +79,10 @@ export class Agenda implements OnInit {
   eventTime(event: Event): string {
     const date = this.eventDate(event);
     return date ? date.toLocaleTimeString('es-PE', { hour: '2-digit', minute: '2-digit' }) : 'Por definir';
+  }
+
+  googleCalendarUrl(event: Event): string {
+    return buildGoogleCalendarUrl(event);
   }
 
   trackDay(_: number, day: CalendarDay): string {

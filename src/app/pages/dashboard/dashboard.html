@@ -3,29 +3,29 @@
     <div class="hero-copy">
       <span class="eyebrow">
         <mat-icon>verified</mat-icon>
-        Acceso {{ roleLabel }}
+        {{ language.t('Acceso', 'Access') }} {{ roleLabel }}
       </span>
       <h1>{{ greeting }}</h1>
       <p>{{ intro }}</p>
       <div class="hero-actions">
         <a routerLink="/agenda">
           <mat-icon>event</mat-icon>
-          Ver agenda
+          {{ language.t('Ver agenda', 'View agenda') }}
         </a>
         @if (role === 'ADMINISTRADOR') {
           <a routerLink="/usuarios" class="soft">
             <mat-icon>groups</mat-icon>
-            Comunidad registrada
+            {{ language.t('Comunidad registrada', 'Registered community') }}
           </a>
         } @else if (role === 'ESTUDIANTE') {
           <a routerLink="/reservas" class="soft">
             <mat-icon>bookmark</mat-icon>
-            Mis reservas
+            {{ language.t('Mis reservas', 'My reservations') }}
           </a>
         } @else {
           <a routerLink="/eventos/insert" class="soft">
             <mat-icon>add_circle</mat-icon>
-            Crear evento
+            {{ language.t('Crear evento', 'Create event') }}
           </a>
         }
       </div>
@@ -159,6 +159,18 @@
         } @else {
           <p class="empty-state">Aún no hay próximos eventos cargados. Puedes revisar la agenda o crear uno nuevo.</p>
         }
+      </article>
+
+      <article class="panel-card groups-panel">
+        <div class="panel-heading">
+          <span>Comunidades</span>
+          <h2>Grupos a los que perteneces</h2>
+        </div>
+        <div class="group-list">
+          <span>Ingles B1 Conversacion</span>
+          <span>Club Frances Cultural</span>
+          <span>Intercambio Multicultural</span>
+        </div>
       </article>
     </div>
   }

@@ -3,17 +3,17 @@
     <div>
       <a routerLink="/panel" class="back-link">
         <mat-icon>arrow_back</mat-icon>
-        Volver al panel
+        {{ language.t('Volver al panel', 'Back to dashboard') }}
       </a>
-      <span class="eyebrow">Agenda Glottia</span>
-      <h1>Calendario de eventos</h1>
-      <p>Los encuentros aparecen directamente en su fecha real para que la agenda se sienta viva y fácil de revisar.</p>
+      <span class="eyebrow">{{ language.t('Agenda Glottia', 'Glottia agenda') }}</span>
+      <h1>{{ language.t('Calendario de eventos', 'Events calendar') }}</h1>
+      <p>{{ language.t('Los encuentros aparecen directamente en su fecha real para que la agenda se sienta viva y facil de revisar.', 'Meetups appear directly on their real date so the agenda feels live and easy to review.') }}</p>
     </div>
 
     <div class="hero-stat">
       <mat-icon>calendar_month</mat-icon>
       <strong>{{ monthEvents.length }}</strong>
-      <span>eventos este mes</span>
+      <span>{{ language.t('eventos este mes', 'events this month') }}</span>
     </div>
   </div>
 
@@ -23,11 +23,11 @@
         <mat-icon>chevron_left</mat-icon>
       </button>
       <div>
-        <span>Vista mensual</span>
+        <span>{{ language.t('Vista mensual', 'Monthly view') }}</span>
         <h2>{{ monthTitle }}</h2>
       </div>
       <div class="toolbar-actions">
-        <button type="button" class="today" (click)="goToday()">Hoy</button>
+        <button type="button" class="today" (click)="goToday()">{{ language.t('Hoy', 'Today') }}</button>
         <button type="button" (click)="nextMonth()" aria-label="Mes siguiente">
           <mat-icon>chevron_right</mat-icon>
         </button>
@@ -37,7 +37,7 @@
     @if (loading) {
       <div class="agenda-loading">
         <span></span>
-        Cargando eventos reales...
+        {{ language.t('Cargando eventos reales...', 'Loading real events...') }}
       </div>
     } @else {
       @if (error) {
@@ -66,7 +66,7 @@
                   <span class="event-pill">{{ event.titulo }}</span>
                 }
                 @if (day.events.length > 2) {
-                  <span class="more-pill">+{{ day.events.length - 2 }} más</span>
+                  <span class="more-pill">+{{ day.events.length - 2 }} {{ language.t('mas', 'more') }}</span>
                 }
               </div>
             </button>
@@ -74,7 +74,7 @@
         </div>
 
         <aside class="day-detail">
-          <span class="eyebrow">Detalle del día</span>
+          <span class="eyebrow">{{ language.t('Detalle del dia', 'Day detail') }}</span>
           @if (selectedDay) {
             <h3>{{ selectedDay.date | date:'EEEE d MMMM':'':'es-PE' }}</h3>
             @if (selectedDay.events.length) {
@@ -87,15 +87,19 @@
                     @if (event.ubicacion) {
                       <small><mat-icon>location_on</mat-icon>{{ event.ubicacion }}</small>
                     }
+                    <a class="calendar-link" [href]="googleCalendarUrl(event)" target="_blank" rel="noopener noreferrer">
+                      <mat-icon>calendar_month</mat-icon>
+                      {{ language.t('Agregar a Google Calendar', 'Add to Google Calendar') }}
+                    </a>
                   </article>
                 }
               </div>
             } @else {
-              <p class="empty-day">Ese día no tiene eventos. Puedes moverte por el calendario o volver al panel.</p>
+              <p class="empty-day">{{ language.t('Ese dia no tiene eventos. Puedes moverte por el calendario o volver al panel.', 'That day has no events. You can move through the calendar or go back to the dashboard.') }}</p>
             }
           }
           <a routerLink="/eventos" class="list-link">
-            Ver lista completa
+            {{ language.t('Ver lista completa', 'View full list') }}
             <mat-icon>arrow_forward</mat-icon>
           </a>
         </aside>

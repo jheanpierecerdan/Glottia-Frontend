@@ -7,8 +7,8 @@
 
       <div class="hero-copy">
         <span>{{ countText }}</span>
-        <h1>{{ title() }}</h1>
-        <p>{{ description() }}</p>
+        <h1>{{ language.label(title()) }}</h1>
+        <p>{{ language.label(description()) }}</p>
       </div>
     </div>
 
@@ -16,12 +16,12 @@
       @if (canCreate()) {
         <a class="primary-action" mat-flat-button [routerLink]="[basePath(), 'insert']">
           <mat-icon>add_circle</mat-icon>
-          Nuevo registro
+          {{ language.t('Nuevo registro', 'New record') }}
         </a>
       }
       <button class="ghost-action" mat-button type="button" (click)="reload.emit()">
         <mat-icon>refresh</mat-icon>
-        Actualizar datos
+        {{ language.t('Actualizar datos', 'Refresh data') }}
       </button>
     </div>
   </div>
@@ -34,8 +34,8 @@
           type="search"
           [value]="searchTerm"
           (input)="updateSearch($any($event.target).value)"
-          placeholder="Buscar por nombre, correo, fecha, estado..."
-          aria-label="Buscar registros"
+          [placeholder]="language.t('Buscar por nombre, correo, fecha, estado...', 'Search by name, email, date, status...')"
+          [attr.aria-label]="language.t('Buscar registros', 'Search records')"
         />
       </div>
       <span>{{ filteredCountText }}</span>
@@ -57,7 +57,7 @@
       <mat-card-content>
         <span class="state-orb"><mat-icon aria-hidden="true">error</mat-icon></span>
         <div>
-          <strong>No se pudo cargar</strong>
+          <strong>{{ language.t('No se pudo cargar', 'Could not load') }}</strong>
           <p>{{ error() }}</p>
         </div>
       </mat-card-content>
@@ -77,8 +77,8 @@
       <mat-card-content>
         <span class="state-orb"><mat-icon aria-hidden="true">search_off</mat-icon></span>
         <div>
-          <strong>No encontramos coincidencias</strong>
-          <p>Prueba con otro nombre, fecha, correo o estado.</p>
+          <strong>{{ language.t('No encontramos coincidencias', 'No matches found') }}</strong>
+          <p>{{ language.t('Prueba con otro nombre, fecha, correo o estado.', 'Try another name, date, email or status.') }}</p>
         </div>
       </mat-card-content>
     </mat-card>
@@ -91,7 +91,7 @@
           <mat-card-content>
             <button class="record-summary" type="button" (click)="toggleRow(row)" [attr.aria-expanded]="isExpanded(row)">
               <div class="record-main">
-                <span>{{ title() }}</span>
+                <span>{{ language.label(title()) }}</span>
                 <strong>{{ primaryValue(row) }}</strong>
               </div>
               <div class="summary-side">
@@ -104,7 +104,7 @@
               @for (column of summaryColumns(row); track column.key) {
                 <div>
                   <mat-icon aria-hidden="true">{{ fieldIcon(column.key) }}</mat-icon>
-                  <span>{{ column.label }}</span>
+                  <span>{{ language.label(column.label) }}</span>
                   <strong>{{ displayValue(row, column.key) }}</strong>
                 </div>
               }
@@ -116,7 +116,7 @@
                 <div class="detail-row">
                   <dt>
                     <mat-icon aria-hidden="true">{{ fieldIcon(column.key) }}</mat-icon>
-                    {{ column.label }}
+                    {{ language.label(column.label) }}
                   </dt>
                   <dd>{{ displayValue(row, column.key) }}</dd>
                 </div>
@@ -127,10 +127,17 @@
 
           <mat-card-actions align="end">
             @for (action of extraActions(); track action.label) {
-              <a mat-flat-button color="primary" class="extra-action" [routerLink]="action.link(row)" [queryParams]="getActionQueryParams(action, row)">
-                <mat-icon>event_available</mat-icon>
-                {{ action.label }}
-              </a>
+              @if (getActionUrl(action, row); as url) {
+                <a mat-flat-button class="extra-action" [href]="url" target="_blank" rel="noopener noreferrer">
+                  <mat-icon>{{ action.icon || 'open_in_new' }}</mat-icon>
+                  {{ action.label }}
+                </a>
+              } @else {
+                <a mat-flat-button class="extra-action" [routerLink]="action.link?.(row)" [queryParams]="getActionQueryParams(action, row)">
+                  <mat-icon>{{ action.icon || 'event_available' }}</mat-icon>
+                  {{ action.label }}
+                </a>
+              }
             }
             @if (canModify()) {
               <a mat-button [routerLink]="[basePath(), 'update', getId(row)]">
