@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 const LOCAL_API = 'http://localhost:8080/api';
-const RENDER_API = 'https://backend-glottia-main.onrender.com/api';
+const RENDER_API = 'https://backend-glottia.onrender.com/api';
 
 const isBrowser = typeof window !== 'undefined';
 const isLocalHost = isBrowser && ['localhost', '127.0.0.1'].includes(window.location.hostname);
