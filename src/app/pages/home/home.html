@@ -146,16 +146,6 @@
   <span [style.width.%]="scrollProgress"></span>
 </div>
 
-@if (feedback.message()) {
-  <div class="feedback" role="status" aria-live="polite">
-    <span class="feedback-icon"><mat-icon>sms</mat-icon></span>
-    <p>{{ feedback.message() }}</p>
-    <button type="button" (click)="feedback.clear()" aria-label="Cerrar notificacion">
-      <mat-icon>close</mat-icon>
-    </button>
-  </div>
-}
-
 @if (isLandingPage) {
   @if (!experienceReady) {
     <div class="experience-gate" role="dialog" aria-modal="true" aria-label="Bienvenida a Glottia">

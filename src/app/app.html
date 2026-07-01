@@ -1,1 +1,11 @@
 <router-outlet></router-outlet>
+
+@if (feedback.message()) {
+  <div class="feedback" role="status" aria-live="polite">
+    <span class="feedback-icon"><mat-icon>sms</mat-icon></span>
+    <p>{{ feedback.message() }}</p>
+    <button type="button" (click)="feedback.clear()" aria-label="Cerrar notificacion">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+}

@@ -4,6 +4,7 @@ import { Router, RouterLink } from '@angular/router';
 import { finalize } from 'rxjs';
 import { MatIconModule } from '@angular/material/icon';
 import { Users } from '../../services/users';
+import { FeedbackService } from '../../services/feedback';
 import { SoundService } from '../../services/sound.service';
 import { LanguageService } from '../../services/language.service';
 
@@ -34,6 +35,7 @@ export class Register {
     private readonly users: Users,
     private readonly router: Router,
     private readonly sound: SoundService,
+    private readonly feedback: FeedbackService,
     readonly language: LanguageService,
   ) {}
 
@@ -60,6 +62,7 @@ export class Register {
     }).pipe(finalize(() => this.loading = false)).subscribe({
       next: () => {
         this.sound.success();
+        this.feedback.show('Cuenta registrada exitosamente. Ya puedes iniciar sesion.');
         void this.router.navigate(['/login']);
       },
       error: () => {
