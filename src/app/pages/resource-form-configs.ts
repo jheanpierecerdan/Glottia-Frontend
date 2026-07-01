@@ -67,8 +67,8 @@ export const reservationFields: ResourceFormField[] = [
     { value: 'Confirmada', label: 'Confirmada' },
     { value: 'Cancelada', label: 'Cancelada' },
   ] },
-  { key: 'idUsuario', label: 'ID Usuario', type: 'number', required: true, min: 1 },
-  { key: 'idEvento', label: 'ID Evento', type: 'number', required: true, min: 1 },
+  { key: 'idUsuario', label: 'Usuario', type: 'number', required: true, min: 1 },
+  { key: 'idEvento', label: 'Evento', type: 'number', required: true, min: 1 },
 ];
 
 export const userLanguageFields: ResourceFormField[] = [

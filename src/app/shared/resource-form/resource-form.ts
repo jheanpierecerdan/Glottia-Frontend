@@ -181,6 +181,11 @@ export class ResourceForm implements OnInit {
     return 'label';
   }
 
+  openNativePicker(input: HTMLInputElement): void {
+    input.focus();
+    (input as HTMLInputElement & { showPicker?: () => void }).showPicker?.();
+  }
+
   private get successText(): string {
     if (this.successMessage()) return this.successMessage();
     return this.mode() === 'insert' ? 'Guardado exitosamente.' : 'Modificado exitosamente.';

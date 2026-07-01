@@ -79,7 +79,12 @@
                   @if (field.type === 'textarea') {
                     <textarea matInput rows="4" [formControlName]="field.key"></textarea>
                   } @else {
-                    <input matInput [type]="field.type ?? 'text'" [formControlName]="field.key" />
+                    <input #fieldInput matInput [type]="field.type ?? 'text'" [formControlName]="field.key" />
+                    @if (field.type === 'date' || field.type === 'datetime-local') {
+                      <button mat-icon-button matSuffix type="button" (click)="openNativePicker(fieldInput)" aria-label="Abrir calendario">
+                        <mat-icon>calendar_month</mat-icon>
+                      </button>
+                    }
                   }
                   @if (field.required) {
                     <mat-hint>{{ language.t('Obligatorio', 'Required') }}</mat-hint>
